@@ -5,6 +5,7 @@ import os
 import logging 
 import numpy as np 
 import sys 
+from torchvision import transforms
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -35,10 +36,10 @@ def make_dataset(raw_dir = "./data/raw/", processed_dir = "./data/processed/"):
     validation_target = torch.tensor(df[df['Usage'] == 'PublicTest']['emotion'].values)
     test_target = torch.tensor(df[df['Usage'] == 'PrivateTest']['emotion'].values)
 
-    # change targets to one-hot encoding
-    train_target = torch.nn.functional.one_hot(train_target, num_classes=7)
-    validation_target = torch.nn.functional.one_hot(validation_target, num_classes=7)
-    test_target = torch.nn.functional.one_hot(test_target, num_classes=7)
+    # # change targets to one-hot encoding
+    # train_target = torch.nn.functional.one_hot(train_target, num_classes=7)
+    # validation_target = torch.nn.functional.one_hot(validation_target, num_classes=7)
+    # test_target = torch.nn.functional.one_hot(test_target, num_classes=7)
 
     logger.info(f"Train shape: {train.shape}")
     logger.info(f"Validation shape: {validation.shape}")
@@ -57,7 +58,6 @@ def make_dataset(raw_dir = "./data/raw/", processed_dir = "./data/processed/"):
     torch.save(validation_target, processed_dir + "validation_target.pt")
     torch.save(test_target, processed_dir + "test_target.pt")
     
-    logger.info("Processing dataset completed.")
 
 
 if __name__ == '__main__':
