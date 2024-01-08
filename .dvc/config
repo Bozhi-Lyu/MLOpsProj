@@ -2,3 +2,4 @@
     remote = storage
 ['remote "storage"']
     url = gdrive://13vrZZnq4KLdvFrq_P6RRT8az3USUM6wV
+    gdrive_acknowledge_abuse = true
