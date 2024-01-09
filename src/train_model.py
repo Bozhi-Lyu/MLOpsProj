@@ -7,7 +7,7 @@ import logging
 import tqdm
 from torchvision import transforms
 
-from models.model import DeiTClassifier, DeiTClassifierPretrained
+from models.model import DeiTClassifier, DeiTClassifierPretrained, EfficientNet, ResNet
 import wandb
 from torch.utils.data import Dataset
 
@@ -41,8 +41,8 @@ class CustomTensorDataset(Dataset):
     def __len__(self):
         return self.tensors[0].size(0)
         
-lr = 0.01
-batch_size = 64
+lr = 0.1
+batch_size = 128
 
 wandb.init(project="DeiT-FER Training",
            entity="jakwisn")
@@ -81,7 +81,8 @@ if __name__ == "__main__":
         validation_set = CustomTensorDataset((validation_images, validation_target), transform=transform)
         test_set = CustomTensorDataset((test_images, test_target), transform=transform)
 
-        model = DeiTClassifierPretrained().to(device)
+        model = EfficientNet().to(device)
+
     else:
         
         transform = transforms.Compose([
@@ -102,11 +103,8 @@ if __name__ == "__main__":
         train_set = TensorDataset(train_images, train_target)
         validation_set = TensorDataset(validation_images, validation_target)
         test_set = TensorDataset(test_images, test_target)
-
-
     
         model = DeiTClassifier().to(device)
-
 
 
     logger.info("Processing dataset completed.")
@@ -173,6 +171,7 @@ if __name__ == "__main__":
 
         model.eval()
         with torch.no_grad():
+            correct = 0
             for batch_idx, (images, labels) in enumerate(validationloader):
                 images = images.to(device)
                 labels = labels.to(device)
@@ -181,19 +180,17 @@ if __name__ == "__main__":
                 loss = criterion(output, labels)
                 logger.debug("Validation loss: {}".format(loss.item()))
                 
-                wandb.log({"val_loss": loss})
-
                 # measure accuracy
                 _, pred = torch.max(output, 1)
-                correct = (pred == labels).sum().item()
-                accuracy = correct / len(labels)
-                logger.debug("Validation accuracy: {}".format(accuracy))
+                correct += (pred == labels).sum().item()
+                logger.debug("Validation accuracy: {}".format(correct/len(labels)))
 
-                wandb.log({"val_accuracy": accuracy})
+        accuracy = correct / len(validationloader)
+        wandb.log({"val_accuracy": accuracy})
                 
-                val_loss += loss.item()
+    val_loss += loss.item()
             
-            logger.info(f"Epoch {epoch} - Validation loss: {val_loss/len(validationloader)}")
+    logger.info(f"Epoch {epoch} - Validation loss: {val_loss/len(validationloader)}")
 
 
     logger.info("Training completed.")
@@ -221,7 +218,7 @@ if __name__ == "__main__":
 
             output = model(images)
             loss = criterion(output, labels)
-            logger.info("Test loss: {}".format(loss.item()))
+            logger.debug("Test loss: {}".format(loss.item()))
 
             # measure accuracy
             _, pred = torch.max(output, 1)
@@ -229,7 +226,7 @@ if __name__ == "__main__":
         
         accuracy = correct / len(testloader)
 
-        logger.debug("Test accuracy: {}".format(accuracy))
+        logger.info("Test accuracy: {}".format(accuracy))
         wandb.log({"test_accuracy": accuracy})
             
         logger.info(f"Test accuracy: {accuracy * 100}%")
