@@ -1,17 +1,19 @@
 import torch
 from torch import nn
-from transformers import AutoImageProcessor, DeiTForImageClassification, DeiTConfig
+from transformers import DeiTForImageClassification, DeiTConfig
 import torch.nn.functional as F
-import timm 
+from omegaconf import OmegaConf
+
+config = OmegaConf.load('src/models/model_config.yaml')['hyperparameters']
 
 model_config = DeiTConfig(
-    image_size=48,
-    patch_size=16,
-    num_classes=7, 
-    num_channels=1,
-    num_attention_heads=4,
-    num_hidden_layers=4,
-    hidden_size=256,
+    image_size=config.image_size,
+    patch_size=config.patch_size,
+    num_classes=config.num_classes, 
+    num_channels=config.num_channels,
+    num_attention_heads=config.num_attention_heads,
+    num_hidden_layers=config.num_hidden_layers,
+    hidden_size=config.hidden_size,
 )
 
 
@@ -23,12 +25,11 @@ class DeiTClassifier(nn.Module):
         n_inputs = self.model.classifier.in_features
 
         self.model.classifier = nn.Sequential(
-                    nn.Linear(n_inputs, 512),
+                    nn.Linear(n_inputs, config.fully_connected_size),
                     nn.ReLU(),
                     nn.Dropout(0.3),
-                    nn.Linear(512, 7)
+                    nn.Linear(config.fully_connected_size, config.num_classes)
                 )
-        
 
     def forward(self, x):
         x = self.model(x).logits
