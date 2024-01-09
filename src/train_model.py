@@ -7,7 +7,7 @@ import logging
 import tqdm
 from torchvision import transforms
 
-from models.model import DeiTClassifier, DeiTClassifierPretrained, EfficientNet, ResNet
+from models.model import *
 import wandb
 from torch.utils.data import Dataset
 
@@ -41,7 +41,7 @@ class CustomTensorDataset(Dataset):
     def __len__(self):
         return self.tensors[0].size(0)
         
-lr = 0.1
+lr = 0.01
 batch_size = 128
 
 wandb.init(project="DeiT-FER Training",
@@ -58,54 +58,27 @@ if __name__ == "__main__":
     else:
         device = torch.device("cpu")
 
-    pretrained = True
 
-    if pretrained:
-                    
-        transform = transforms.Compose([
-            transforms.Resize((224, 224), antialias=True),  # Resize to 224x224 pixels
-            #transforms.Grayscale(num_output_channels=3),  # Convert to 3-channel grayscale
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize according to ImageNet
-        ])
+    transform = transforms.Compose([
+        transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
+        transforms.RandomRotation(10),  # Rotate the image by up to 10 degrees
+        transforms.RandomResizedCrop(48, scale=(0.8, 1.0)),  # Zoom in on the image
+    ])
 
-        train_images = torch.load("data/processed/train_images.pt").repeat(1, 3, 1, 1)  
-        train_target = torch.load("data/processed/train_target.pt")
+    train_images = torch.load("data/processed/train_images.pt")  
+    train_target = torch.load("data/processed/train_target.pt")
 
-        validation_images = torch.load("data/processed/validation_images.pt").repeat(1, 3, 1, 1)  
-        validation_target = torch.load("data/processed/validation_target.pt")
+    validation_images = torch.load("data/processed/validation_images.pt")  
+    validation_target = torch.load("data/processed/validation_target.pt")
 
-        test_images = torch.load("data/processed/test_images.pt").repeat(1, 3, 1, 1)  
-        test_target = torch.load("data/processed/test_target.pt")
+    test_images = torch.load("data/processed/test_images.pt")  
+    test_target = torch.load("data/processed/test_target.pt")
 
-        train_set = CustomTensorDataset((train_images, train_target), transform=transform)
-        validation_set = CustomTensorDataset((validation_images, validation_target), transform=transform)
-        test_set = CustomTensorDataset((test_images, test_target), transform=transform)
+    train_set = TensorDataset(train_images, train_target)
+    validation_set = TensorDataset(validation_images, validation_target)
+    test_set = TensorDataset(test_images, test_target)
 
-        model = EfficientNet().to(device)
-
-    else:
-        
-        transform = transforms.Compose([
-            transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
-            transforms.RandomRotation(10),  # Rotate the image by up to 10 degrees
-            transforms.RandomResizedCrop(48, scale=(0.8, 1.0)),  # Zoom in on the image
-        ])
-
-        train_images = torch.load("data/processed/train_images.pt")  
-        train_target = torch.load("data/processed/train_target.pt")
-
-        validation_images = torch.load("data/processed/validation_images.pt")  
-        validation_target = torch.load("data/processed/validation_target.pt")
-
-        test_images = torch.load("data/processed/test_images.pt")  
-        test_target = torch.load("data/processed/test_target.pt")
-
-        train_set = TensorDataset(train_images, train_target)
-        validation_set = TensorDataset(validation_images, validation_target)
-        test_set = TensorDataset(test_images, test_target)
-    
-        model = DeiTClassifier().to(device)
-
+    model = DeiTClassifier().to(device)
 
     logger.info("Processing dataset completed.")
 
