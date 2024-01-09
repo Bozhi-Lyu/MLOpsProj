@@ -1,29 +1,22 @@
 import os
+import logging
+import torch
+import tqdm
+import wandb
 
 import matplotlib.pyplot as plt
-import torch
 from torch.utils.data import TensorDataset
-import logging
-import tqdm
-from torchvision import transforms
-
-from models.model import *
-import wandb
 from torch.utils.data import Dataset
+from torchvision import transforms
+import hydra
 
-
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-
-
+from models.model import DeiTClassifier
 
 
 class CustomTensorDataset(Dataset):
     """TensorDataset with support of transforms.
     """
-    def __init__(self, tensors, transform=None):
+    def __init__(self, tensors: torch.Tensor, transform=None)-> None:
         assert all(tensors[0].size(0) == tensor.size(0) for tensor in tensors)
         self.tensors = tensors
         self.transform = transform
@@ -41,15 +34,19 @@ class CustomTensorDataset(Dataset):
     def __len__(self):
         return self.tensors[0].size(0)
         
-lr = 0.01
-batch_size = 128
 
-wandb.init(project="DeiT-FER Training",
-           entity="jakwisn")
+@hydra.main(config_name="train_config.yaml", config_path='.', version_base='1.2')
+def main(config):
 
+    config = config['hyperparameters']  
+    wandb.init(project=config.project_name,
+               entity=config.user)
 
-if __name__ == "__main__":
-    
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
+    wandb.config = config
+
     logger.info("Training FER model")
 
     if torch.cuda.is_available():
@@ -57,7 +54,6 @@ if __name__ == "__main__":
         logging.info("Training on GPU")
     else:
         device = torch.device("cpu")
-
 
     transform = transforms.Compose([
         transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
@@ -79,49 +75,46 @@ if __name__ == "__main__":
     test_set = TensorDataset(test_images, test_target)
 
     model = DeiTClassifier().to(device)
-
+    wandb.watch(model)
     logger.info("Processing dataset completed.")
 
     trainloader = torch.utils.data.DataLoader(train_set, 
-                                              batch_size=batch_size,
+                                              batch_size=config.batch_size,
                                               shuffle=True, 
-                                              num_workers=6, 
+                                              num_workers=config.num_workers, 
                                               pin_memory=True,
                                               drop_last=True, 
                                               )
 
     validationloader = torch.utils.data.DataLoader(validation_set, 
-                                              batch_size=batch_size,
+                                              batch_size=config.batch_size,
                                               shuffle=False, 
-                                              num_workers=6, 
+                                              num_workers=config.num_workers, 
                                               pin_memory=True, 
                                               )
 
     testloader = torch.utils.data.DataLoader(test_set, 
-                                              batch_size=batch_size,
-                                              shuffle=False, 
-                                              num_workers=6, 
+                                              batch_size=config.batch_size,
+                                              shuffle=False,
+                                              num_workers=config.num_workers, 
                                               pin_memory=True, 
                                               )
 
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
     criterion = torch.nn.CrossEntropyLoss()
-
     history = []
-    epochs = 15
 
     logger.info("Starting training...")
     
-    
-    for epoch in range(epochs):
+    for epoch in range(config.epochs):
         train_loss = 0
         val_loss = 0
         model.train()
-        for batch_idx, (images, labels) in enumerate(tqdm.tqdm(trainloader,
-                                                               total=len(trainloader),
-                                                               position=0, 
-                                                               leave=True)):
+        for images, labels in tqdm.tqdm(trainloader,
+                                        total=len(trainloader),
+                                        position=0, 
+                                        leave=True):
             images = images.to(device)
             labels = labels.to(device)
 
@@ -145,7 +138,7 @@ if __name__ == "__main__":
         model.eval()
         with torch.no_grad():
             correct = 0
-            for batch_idx, (images, labels) in enumerate(validationloader):
+            for images, labels in validationloader:
                 images = images.to(device)
                 labels = labels.to(device)
 
@@ -204,3 +197,5 @@ if __name__ == "__main__":
             
         logger.info(f"Test accuracy: {accuracy * 100}%")
 
+if __name__ == "__main__":
+    main()
