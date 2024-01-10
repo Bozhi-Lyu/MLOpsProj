@@ -1,5 +1,5 @@
 * [X] Create a git repository
-* [ ] Make sure that all team members have write access to the github repository
+* [X] Make sure that all team members have write access to the github repository
 * [X] Create a dedicated environment for you project to keep track of your packages
 * [X] Create the initial file structure using cookiecutter
 * [X] Fill out the make_dataset.py file such that it downloads whatever data you need and
