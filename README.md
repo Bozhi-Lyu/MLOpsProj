@@ -4,8 +4,7 @@
 The project aims to classify facial expressions into 7 categories (TODO: what are those).
 In detail (might change) the user will be able to upload a picture of a 
 face and the model will classify the facial expression into one of the 7 different categories. 
-The whole project aims to orchestrate the whole process of training, deploying and monitoring the model. There 
-won't be any frontend for the user to interact with, but the user will be able to upload a picture of a face through an API 
+The whole project aims to orchestrate the whole process of training, deploying and monitoring the model. There won't be any frontend for the user to interact with, but the user will be able to upload a picture of a face through an API 
 and get the classification result back. The problem here would be to face align the faces in the image and crop it 
 accordingly, but there are tools that can do that and we will treat it like a blackbox. 
 
