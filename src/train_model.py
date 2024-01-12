@@ -10,7 +10,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import hydra
 
-from models.model import DeiTClassifier
+from src.models.model import DeiTClassifier
 
 
 class CustomTensorDataset(Dataset):
@@ -38,7 +38,14 @@ class CustomTensorDataset(Dataset):
 @hydra.main(config_name="train_config.yaml", config_path='.', version_base='1.2')
 def main(config):
 
+    # os.environ["CUDA_LAUNCH_BLOCKING"] = "1" # For CUDA 10.1
+    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":16:8" # For CUDA >= 10.2
+    # https://docs.nvidia.com/cuda/cublas/index.html#cublasApi_reproducibility
+    torch.use_deterministic_algorithms(True)
+    # make sure reproducibility.
+
     config = config['hyperparameters']  
+    torch.manual_seed(config["seed"])    
     wandb.init(project=config.project_name,
                entity=config.user)
 
@@ -61,14 +68,14 @@ def main(config):
         transforms.RandomResizedCrop(48, scale=(0.8, 1.0)),  # Zoom in on the image
     ])
 
-    train_images = torch.load("data/processed/train_images.pt")  
-    train_target = torch.load("data/processed/train_target.pt")
+    train_images = torch.load(config["data_path"] + "train_images.pt")  
+    train_target = torch.load(config["data_path"] + "train_target.pt")
 
-    validation_images = torch.load("data/processed/validation_images.pt")  
-    validation_target = torch.load("data/processed/validation_target.pt")
+    validation_images = torch.load(config["data_path"] + "validation_images.pt")  
+    validation_target = torch.load(config["data_path"] + "validation_target.pt")
 
-    test_images = torch.load("data/processed/test_images.pt")  
-    test_target = torch.load("data/processed/test_target.pt")
+    test_images = torch.load(config["data_path"] + "test_images.pt")  
+    test_target = torch.load(config["data_path"] + "test_target.pt")
 
     train_set = TensorDataset(train_images, train_target)
     validation_set = TensorDataset(validation_images, validation_target)
@@ -151,7 +158,7 @@ def main(config):
                 correct += (pred == labels).sum().item()
                 logger.debug("Validation accuracy: {}".format(correct/len(labels)))
 
-        accuracy = correct / len(validationloader)
+        accuracy = correct / len(validation_set)
         wandb.log({"val_accuracy": accuracy})
                 
     val_loss += loss.item()
@@ -164,7 +171,7 @@ def main(config):
     if not os.path.exists("models/saved_models"):
         os.makedirs("models/saved_models")
 
-    torch.save(model, "models/saved_models/model.pt")
+    torch.save(model.state_dict(), "models/saved_models/model.pt")
 
     plt.plot(range(len(history)), history, label="Training Loss")
     plt.xlabel("Steps")
@@ -190,7 +197,7 @@ def main(config):
             _, pred = torch.max(output, 1)
             correct += (pred == labels).sum().item()
         
-        accuracy = correct / len(testloader)
+        accuracy = correct / len(test_set)
 
         logger.info("Test accuracy: {}".format(accuracy))
         wandb.log({"test_accuracy": accuracy})

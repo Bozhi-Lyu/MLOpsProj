@@ -17,6 +17,7 @@ manual_test/
 
 # data file folder
 data/raw/fer2013.csv
+tests/testdata/*.pt
 
 
 # Byte-compiled / optimized / DLL files
@@ -180,3 +181,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 /models
+
+notebooks/*
+reports/*
+wandb/*
+outputs/*
