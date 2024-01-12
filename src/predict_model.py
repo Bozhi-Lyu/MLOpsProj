@@ -1,5 +1,7 @@
 import logging
 import os
+# Related third-party imports
+import torch
 
 import torch
 from torch.utils.data import DataLoader
@@ -19,18 +21,22 @@ torch.use_deterministic_algorithms(True)
 @hydra.main(config_path="config", config_name="default_config.yaml")
 def predict(
     config,
+    model: torch.nn.Module,
+    dataloader: torch.utils.data.DataLoader,
     model_checkpoint: str = "/models/saved_models/model.pt",
-) -> None:
-    """Run prediction for a given model and dataloader.
-    
-    Args:
-        model: model to use for prediction
-        dataloader: dataloader with batches
-    
-    Returns
-        Tensor of shape [N, d] where N is the number of samples and d is the output dimension of the model
-
+    ) -> None:
     """
+    Run prediction for a given model and dataloader.
+
+    Args:
+        model (nn.Module): Model to use for prediction.
+        dataloader (data.DataLoader): Dataloader with batches of data.
+
+    Returns:
+        torch.Tensor: A tensor of shape [N, d], where N is the number of samples
+                      and d is the output dimension of the model.
+    """
+    
     config = config['hyperparameters']  
     torch.manual_seed(config["seed"])
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -49,3 +55,4 @@ def predict(
 
 
     return torch.cat([model(batch) for batch in dataloader], 0)
+    
