@@ -3,3 +3,7 @@ outs:
   size: 301072766
   hash: md5
   path: fer2013.csv
+  cloud:
+    remote_storage:
+      etag: 08f2849dafc9d783031001
+      version_id: '1705052991865458'
