@@ -10,10 +10,10 @@ RUN apt update && \
 ARG WANDB_API_KEY
 ENV WANDB_API_KEY=$WANDB_API_KEY
 
-COPY requirements.txt requirements.txt
-COPY pyproject.toml pyproject.toml
-COPY src/ src/
-COPY thebestofthebest-411009-4622a4d8f58f.json gcpkey.json
+COPY ../requirements.txt requirements.txt
+COPY ../pyproject.toml pyproject.toml
+COPY ../src/ src/
+
 
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
