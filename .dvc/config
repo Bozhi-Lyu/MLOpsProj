@@ -1,4 +1,8 @@
 [core]
-    remote = storage
+    remote = remote_storage
 ['remote "storage"']
     url = gdrive://13vrZZnq4KLdvFrq_P6RRT8az3USUM6wV
+    gdrive_use_service_account = false
+['remote "remote_storage"']
+    url = gs://thebestofthebestbucket/
+    version_aware = true
