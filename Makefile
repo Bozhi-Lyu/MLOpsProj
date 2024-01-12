@@ -37,10 +37,13 @@ clean:
 #################################################################################
 
 ## Process raw data into processed data
-data:
+pull:
+	dvc pull
+
+data: pull
 	python $(PROJECT_NAME)/data/make_dataset.py
 
-train:
+train: pull
 	python $(PROJECT_NAME)/train_model.py
 
 #################################################################################

@@ -1,5 +1,9 @@
 docs/site/
 
+# Google Services API key
+thebestofthebest-411009-4622a4d8f58f.json
+secret.env
+
 # test cache
 manual_test/
 

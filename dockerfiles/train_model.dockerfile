@@ -14,8 +14,11 @@ COPY ../requirements.txt requirements.txt
 COPY ../pyproject.toml pyproject.toml
 COPY ../src/ src/
 
+
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir
+ENV GOOGLE_APPLICATION_CREDENTIALS='gcpkey.json'
 
-ENTRYPOINT ["python", "-u", "src/train_model.py"]
+#ENTRYPOINT ["python", "-u", "src/train_model.py"]
+ENTRYPOINT ["make", "train"]
