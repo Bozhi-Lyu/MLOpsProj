@@ -2,7 +2,8 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-from transformers import DeiTForImageClassification, DeiTConfig
+from transformers import DeiTForImageClassification
+from transformers import DeiTConfig
 from omegaconf import OmegaConf
 from typing import Any
 
@@ -63,7 +64,7 @@ class DeiTClassifier(nn.Module):
         x = F.log_softmax(x, dim=1)
         return x
 
-    def extract_features(self, x: torch.Tensor) -> Any:
+    def extract_features(self, x: torch.Tensor) -> nn.Module:
         """
         Extract features from the input data using the model.
 

@@ -1,20 +1,25 @@
+# Standard library imports
 import os
 import logging
+
+# Related third-party imports
 import torch
 import tqdm
 import wandb
-
 import matplotlib.pyplot as plt
-from torch.utils.data import TensorDataset
 from torch.utils.data import Dataset
 from torchvision import transforms
 import hydra
-
 from models.model import DeiTClassifier
 
-
 class CustomTensorDataset(Dataset):
-    """TensorDataset with support of transforms."""
+    """
+    TensorDataset with support of transforms.
+
+    Extends the standard PyTorch Dataset to include transform capabilities,
+    which enables the data to be preprocessed bvia various transformations 
+    before the data is input into the model.   
+    """
 
     def __init__(self, tensors: torch.Tensor, transform=None) -> None:
         assert all(tensors[0].size(0) == tensor.size(0) for tensor in tensors)
@@ -37,6 +42,13 @@ class CustomTensorDataset(Dataset):
 
 @hydra.main(config_name="train_config.yaml", config_path=".", version_base="1.2")
 def main(config):
+    """
+    Main function for training the model.
+
+    Initializes the model and dataloaders, then continues to train and validate.
+    Evaluates the model's performance and saves the results as well as the final trained model. 
+    """
+
     config = config["hyperparameters"]
     wandb.init(project=config.project_name, entity=config.user)
 
@@ -53,6 +65,7 @@ def main(config):
     else:
         device = torch.device("cpu")
 
+    # Define transformers 
     transform = transforms.Compose(
         [
             transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
@@ -61,19 +74,28 @@ def main(config):
         ]
     )
 
+    # Load train data
     train_images = torch.load("data/processed/train_images.pt")
     train_target = torch.load("data/processed/train_target.pt")
 
+    # Load validation data
     validation_images = torch.load("data/processed/validation_images.pt")
     validation_target = torch.load("data/processed/validation_target.pt")
 
+    # Load test data
     test_images = torch.load("data/processed/test_images.pt")
     test_target = torch.load("data/processed/test_target.pt")
 
-    train_set = TensorDataset(train_images, train_target)
-    validation_set = TensorDataset(validation_images, validation_target)
-    test_set = TensorDataset(test_images, test_target)
+    #train_set = TensorDataset(train_images, train_target)
+    #validation_set = TensorDataset(validation_images, validation_target)
+    #test_set = TensorDataset(test_images, test_target)
 
+    # Create datasets
+    train_set = CustomTensorDataset((train_images, train_target), transform=transform)
+    validation_set = CustomTensorDataset((validation_images, validation_target), transform=transform)
+    test_set = CustomTensorDataset((test_images, test_target), transform=transform)
+
+    # Initialize model and dataloaders
     model = DeiTClassifier().to(device)
     wandb.watch(model)
     logger.info("Processing dataset completed.")
@@ -103,12 +125,16 @@ def main(config):
         pin_memory=True,
     )
 
+    # Initialize optimizer and loss criterion
     optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
     criterion = torch.nn.CrossEntropyLoss()
+    
+    # Train the model
     history = []
 
     logger.info("Starting training...")
 
+    # Loop
     for epoch in range(config.epochs):
         train_loss = 0
         val_loss = 0
@@ -119,7 +145,6 @@ def main(config):
 
             optimizer.zero_grad()
             output = model(images)
-            # print(labels)
             loss = criterion(output, labels)
             loss.backward()
             optimizer.step()
@@ -144,7 +169,7 @@ def main(config):
                 loss = criterion(output, labels)
                 logger.debug("Validation loss: {}".format(loss.item()))
 
-                # measure accuracy
+                # Measure accuracy
                 _, pred = torch.max(output, 1)
                 correct += (pred == labels).sum().item()
                 logger.debug("Validation accuracy: {}".format(correct / len(labels)))
@@ -161,8 +186,10 @@ def main(config):
     if not os.path.exists("models/saved_models"):
         os.makedirs("models/saved_models")
 
+    # Save model
     torch.save(model, "models/saved_models/model.pt")
 
+    # Plot training curve
     plt.plot(range(len(history)), history, label="Training Loss")
     plt.xlabel("Steps")
     plt.ylabel("Loss")
@@ -170,6 +197,7 @@ def main(config):
     plt.legend()
     plt.savefig("reports/figures/training_curve.png")
 
+    # Test the model
     logger.info("Testing model...")
 
     model.eval()
@@ -183,7 +211,7 @@ def main(config):
             loss = criterion(output, labels)
             logger.debug("Test loss: {}".format(loss.item()))
 
-            # measure accuracy
+            # Measure accuracy
             _, pred = torch.max(output, 1)
             correct += (pred == labels).sum().item()
 
@@ -194,6 +222,6 @@ def main(config):
 
         logger.info(f"Test accuracy: {accuracy * 100}%")
 
-
+# Execution
 if __name__ == "__main__":
     main()

@@ -1,13 +1,11 @@
 # Standard library imports
 import logging
 import sys
-import os  # Not directly used in code
 
 # Related third-party imports
 import torch
 import numpy as np
 import pandas as pd
-from torchvision import transforms  # Not directly used in code
 
 # Configure logging to output to standard output with debug level information
 logger = logging.getLogger(__name__)
