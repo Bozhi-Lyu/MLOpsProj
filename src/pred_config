@@ -1,0 +1,9 @@
+hyperparameters: 
+  batch_size: 64
+  learning_rate: 0.001
+  epochs: 5
+  num_workers: 6
+  project_name: "DeiT-FER Training"
+  user: "infinitebz"
+  seed: 123
+  data_path: "data/processed/"
