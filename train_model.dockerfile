@@ -10,12 +10,12 @@ RUN apt update && \
 ARG WANDB_API_KEY
 ENV WANDB_API_KEY=$WANDB_API_KEY
 
-COPY ../requirements.txt requirements.txt
-COPY ../pyproject.toml pyproject.toml
-COPY ../src/ src/
+COPY requirements.txt requirements.txt
+COPY pyproject.toml pyproject.toml
+COPY src/ src/
 
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir
 
-ENTRYPOINT ["python", "-u", "src/train_model.py"]
+ENTRYPOINT ["make", "train"]
