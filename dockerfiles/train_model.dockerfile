@@ -18,5 +18,6 @@ COPY data/ data/
 WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir
+RUN dvc pull
 
 ENTRYPOINT ["python", "-u", "src/train_model.py"]
