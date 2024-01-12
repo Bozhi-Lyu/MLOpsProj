@@ -37,7 +37,7 @@ clean:
 #################################################################################
 
 ## Process raw data into processed data
-pull: requirements
+pull:
 	dvc pull
 
 data:
