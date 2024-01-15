@@ -21,6 +21,5 @@ WORKDIR /app
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir
 
-RUN dvc pull
 
 ENTRYPOINT ["make", "train"]
