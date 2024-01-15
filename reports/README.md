@@ -240,7 +240,7 @@ We made use of both branches and PRs in our project. In our group, we submitted 
 >
 > Answer:
 
-For our project we used DVC to manage our data, and it helped us by allowing us to share our data
+For our project we used DVC to manage our data, and it helped us by allowing us to save our data and models remotely. These could then also be used on the Cloud functions and in our containers which was of great benefit. Although we didn't update the data throughout the project, it would have been beneficial to track the changes to the data using DVC.
 
 ### Question 11
 
@@ -275,8 +275,7 @@ For our project we used DVC to manage our data, and it helped us by allowing us 
 >
 > Answer:
 
---- question 12 fill here ---
-
+In our project we used config files, and to load those we used both `OmegaConf` and `Hydra`. `OmegaConf` was used to load the model parameters, since it returns the loaded parameters as a dict, which is beneficial for loading model parameters, and `Hydra` was used with the model training, as it can provides wrappers for use with functions.
 ### Question 13
 
 > **Reproducibility of experiments are important. Related to the last question, how did you secure that no information**
@@ -290,7 +289,7 @@ For our project we used DVC to manage our data, and it helped us by allowing us 
 >
 > Answer:
 
---- question 13 fill here ---
+In order to ensure reproducibility of experiments we used config files as mentioned in the previous question. This, in combination with the use of Git, allowed us to easily keep track of which files were used whenever we started training.
 
 ### Question 14
 
