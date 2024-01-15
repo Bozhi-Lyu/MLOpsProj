@@ -46,6 +46,9 @@ data: pull
 train: pull
 	python $(PROJECT_NAME)/train_model.py
 
+predict: requirements
+	python $(PROJECT_NAME)/predict_model.py
+
 #################################################################################
 # Documentation RULES                                                           #
 #################################################################################
