@@ -63,4 +63,8 @@ jobs:
 
     - name: Test with pytest
       run: |
+        dvc pull
+        python src/data/make_dataset.py
+        python src/data/make_subset.py
+        python src/train_model.py
         pytest
