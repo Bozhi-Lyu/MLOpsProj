@@ -5,3 +5,7 @@ outs:
   - relpath: saved_models/model.pt
     md5: b027c2cf1d79633e396bdecf90941527
     size: 30312215
+    cloud:
+      bucket:
+        etag: 08c2e0e8f19adf83031001
+        version_id: '1705315392958530'
