@@ -9,3 +9,5 @@ tqdm>=4.66.1
 google-api-python-client
 dvc
 dvc[gs]
+fastapi>=0.68.0,<0.69.0
+uvicorn>=0.15.0,<0.16.0
