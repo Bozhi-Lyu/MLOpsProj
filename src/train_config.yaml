@@ -6,4 +6,5 @@ hyperparameters:
   num_workers: 6
   project_name: "the-best-DeiT-FER"
   user: "thebestofthebest"
-
+  seed: 1234
+  data_path: 'data/processed/'
