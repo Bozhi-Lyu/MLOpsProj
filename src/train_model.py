@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import Dataset
 from torchvision import transforms
 import hydra
-from models.model import DeiTClassifier
+from src.models.model import *
 
 class CustomTensorDataset(Dataset):
     """
@@ -59,32 +59,41 @@ def main(config):
 
     logger.info("Training FER model")
 
+    # os.environ["CUDA_LAUNCH_BLOCKING"] = "1" # For CUDA 10.1
+    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":16:8"  # For CUDA >= 10.2
+    # https://docs.nvidia.com/cuda/cublas/index.html#cublasApi_reproducibility
+    torch.use_deterministic_algorithms(True)
+    torch.manual_seed(config["seed"])
+
+    # make sure reproducibility.
+
     if torch.cuda.is_available():
         device = torch.device("cuda")
         logging.info("Training on GPU")
     else:
         device = torch.device("cpu")
-
+        logging.info("Training on CPU")
+    
     # Define transformers 
     transform = transforms.Compose(
         [
             transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
             transforms.RandomRotation(10),  # Rotate the image by up to 10 degrees
-            transforms.RandomResizedCrop(48, scale=(0.8, 1.0)),  # Zoom in on the image
+            transforms.RandomResizedCrop(48, scale=(0.8, 1.0), antialias=True),  # Zoom in on the image
         ]
     )
 
     # Load train data
-    train_images = torch.load("data/processed/train_images.pt")
-    train_target = torch.load("data/processed/train_target.pt")
+    train_images = torch.load(config["data_path"] + "train_images.pt")
+    train_target = torch.load(config["data_path"] + "train_target.pt")
 
     # Load validation data
-    validation_images = torch.load("data/processed/validation_images.pt")
-    validation_target = torch.load("data/processed/validation_target.pt")
+    validation_images = torch.load(config["data_path"] + "validation_images.pt")
+    validation_target = torch.load(config["data_path"] + "validation_target.pt")
 
     # Load test data
-    test_images = torch.load("data/processed/test_images.pt")
-    test_target = torch.load("data/processed/test_target.pt")
+    test_images = torch.load(config["data_path"] + "test_images.pt")
+    test_target = torch.load(config["data_path"] + "test_target.pt")
 
     #train_set = TensorDataset(train_images, train_target)
     #validation_set = TensorDataset(validation_images, validation_target)
@@ -97,6 +106,7 @@ def main(config):
 
     # Initialize model and dataloaders
     model = DeiTClassifier().to(device)
+
     wandb.watch(model)
     logger.info("Processing dataset completed.")
 
@@ -174,7 +184,7 @@ def main(config):
                 correct += (pred == labels).sum().item()
                 logger.debug("Validation accuracy: {}".format(correct / len(labels)))
 
-        accuracy = correct / len(validationloader)
+        accuracy = correct / len(validation_set)
         wandb.log({"val_accuracy": accuracy})
 
     val_loss += loss.item()
@@ -187,7 +197,7 @@ def main(config):
         os.makedirs("models/saved_models")
 
     # Save model
-    torch.save(model, "models/saved_models/model.pt")
+    torch.save(model.state_dict(), "models/saved_models/model.pt")
 
     # Plot training curve
     plt.plot(range(len(history)), history, label="Training Loss")
@@ -215,7 +225,7 @@ def main(config):
             _, pred = torch.max(output, 1)
             correct += (pred == labels).sum().item()
 
-        accuracy = correct / len(testloader)
+        accuracy = correct / len(test_set)
 
         logger.info("Test accuracy: {}".format(accuracy))
         wandb.log({"test_accuracy": accuracy})

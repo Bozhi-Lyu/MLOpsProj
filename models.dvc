@@ -1,6 +1,7 @@
 outs:
-- md5: fa10305ee9af34021587cfadfbc10722.dir
-  size: 30313239
-  nfiles: 2
-  hash: md5
+- hash: md5
   path: models
+  files:
+  - relpath: saved_models/model.pt
+    md5: 8e0cbf6061995a3b4532ec2ce6d03f04
+    size: 30291671

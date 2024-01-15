@@ -189,3 +189,4 @@ wandb/
 /models
 
 *.json
+/data

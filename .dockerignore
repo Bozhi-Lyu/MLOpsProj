@@ -1,1 +1,10 @@
 secret.env
+.env 
+data/ 
+models/
+outputs/
+reports/ 
+venv/ 
+wandb/
+.idea/
+.dvc/cache/
