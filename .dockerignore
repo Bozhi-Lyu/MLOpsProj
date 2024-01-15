@@ -3,8 +3,7 @@ secret.env
 data/ 
 models/
 outputs/
-reports/ 
 venv/ 
 wandb/
 .idea/
-.dvc/cache/
+**/*.png

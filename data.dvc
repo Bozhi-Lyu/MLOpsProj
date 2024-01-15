@@ -1,60 +1,6 @@
 outs:
-- hash: md5
+- md5: 752720f18c8f7895919368885a7bbfb6.dir
+  size: 632101604
+  nfiles: 8
+  hash: md5
   path: data
-  files:
-  - relpath: processed/test_images.pt
-    md5: a81e927bef8a25228108a29c26a53d3b
-    size: 33077424
-    cloud:
-      bucket:
-        etag: 08d7a7deab93d983031001
-        version_id: '1705107208508375'
-  - relpath: processed/test_target.pt
-    md5: 45fafc3cb631181f4a00c84db7c52caf
-    size: 29872
-    cloud:
-      bucket:
-        etag: 089c98d2a393d983031001
-        version_id: '1705107191532572'
-  - relpath: processed/train_images.pt
-    md5: 9112d9145cbbd62664256610ed43f64e
-    size: 264583349
-    cloud:
-      bucket:
-        etag: 08fdb9beb493d983031001
-        version_id: '1705107226860797'
-  - relpath: processed/train_target.pt
-    md5: 85053c4ef5604a8720ecadc5843bd544
-    size: 230837
-    cloud:
-      bucket:
-        etag: 0896a5eda393d983031001
-        version_id: '1705107191976598'
-  - relpath: processed/validation_images.pt
-    md5: 9acc8be233e4f32133ce6cc7db59dbfb
-    size: 33077454
-    cloud:
-      bucket:
-        etag: 08b3b8dfa493d983031001
-        version_id: '1705107193846835'
-  - relpath: processed/validation_target.pt
-    md5: 7f5e400d4b23477de94cd164856c25b6
-    size: 29902
-    cloud:
-      bucket:
-        etag: 089f91d2a393d983031001
-        version_id: '1705107191531679'
-  - relpath: raw/.gitkeep
-    md5: d41d8cd98f00b204e9800998ecf8427e
-    size: 0
-    cloud:
-      bucket:
-        etag: 0896b8caa393d983031001
-        version_id: '1705107191405590'
-  - relpath: raw/fer2013.csv
-    md5: f8428a1edbd21e88f42c73edd2a14f95
-    size: 301072766
-    cloud:
-      bucket:
-        etag: 08b3c5a4b793d983031001
-        version_id: '1705107232727731'
