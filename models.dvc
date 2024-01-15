@@ -1,6 +1,11 @@
 outs:
-- md5: fa10305ee9af34021587cfadfbc10722.dir
-  size: 30313239
-  nfiles: 2
-  hash: md5
+- hash: md5
   path: models
+  files:
+  - relpath: saved_models/model.pt
+    md5: a5aabf4fa77a6871196de91c3be59eb4
+    size: 30312215
+    cloud:
+      bucket:
+        etag: 08b1f6bba393d983031001
+        version_id: '1705107191167793'

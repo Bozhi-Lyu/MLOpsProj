@@ -40,7 +40,7 @@ clean:
 pull:
 	dvc pull
 
-data: pull
+data: 
 	python $(PROJECT_NAME)/data/make_dataset.py
 
 train: pull

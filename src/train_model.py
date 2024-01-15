@@ -59,18 +59,19 @@ def main(config):
 
     logger.info("Training FER model")
 
-    if torch.cuda.is_available():
-        device = torch.device("cuda")
-        logging.info("Training on GPU")
-    else:
-        device = torch.device("cpu")
+    # if torch.cuda.is_available():
+    #     device = torch.device("cuda")
+    #     logging.info("Training on GPU")
+    # else:
+    
+    device = torch.device("cpu")
 
     # Define transformers 
     transform = transforms.Compose(
         [
             transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
             transforms.RandomRotation(10),  # Rotate the image by up to 10 degrees
-            transforms.RandomResizedCrop(48, scale=(0.8, 1.0)),  # Zoom in on the image
+            transforms.RandomResizedCrop(48, scale=(0.8, 1.0), antialias=True),  # Zoom in on the image
         ]
     )
 

@@ -4,5 +4,5 @@ workerPoolSpecs:
         machineType: n1-highmem-4
     replicaCount: 1
     containerSpec:
-        imageUri: gcr.io/thebestofthebest-411009/train@sha256:8cfcbd679f20e811ddd40cc1a6823e0b749e6d2da22d3065fbbab0a60112eac2
+        imageUri: gcr.io/thebestofthebest-411009/train@sha256:b19c6fbe21373cea0929cc6419b54d7b4d5c0885aa07598e90c295289ccf4c72
 
