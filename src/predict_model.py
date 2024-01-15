@@ -4,7 +4,7 @@ import torch
 def predict(
   model: torch.nn.Module,
    dataloader: torch.utils.data.DataLoader
-) -> None:
+) -> torch.Tensor:
     """
     Run prediction for a given model and dataloader.
 
@@ -17,3 +17,10 @@ def predict(
                       and d is the output dimension of the model.
     """
     return torch.cat([model(batch) for batch in dataloader], 0)
+
+def predict_image(
+        model: torch.nn.Module,
+        image: torch.Tensor
+) -> torch.Tensor:
+    return model(image)
+    
