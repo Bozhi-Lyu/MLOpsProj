@@ -165,7 +165,7 @@ In order to get a complete copy of our development environment, one can run the 
 > *experiments.*
 > Answer:
 
---- question 5 fill here ---
+From the cookiecutter template we have filled out the data, dockerfiles, src, tests and notebooks folders. We have removed the src/visualizations folder since we do not produce any visualizations through code, but rather through Weights & Biases. We have added a .dvc folder that is used for storing configs and temporary files for our data version control program, DVC.
 
 ### Question 6
 
@@ -176,7 +176,7 @@ In order to get a complete copy of our development environment, one can run the 
 >
 > Answer:
 
---- question 6 fill here ---
+For this project we have used the PEP8 standard across our files. The reason for why it is important for larger projects is that the code should be easily readable for people who have not been involved in coding certain files. It may not be intuitive what type each variable is when you look at a project for the first time, and enforcing code quality and formats helps in this regard
 
 ## Version control
 
@@ -225,7 +225,7 @@ In order to get a complete copy of our development environment, one can run the 
 >
 > Answer:
 
---- question 9 fill here ---
+We made use of both branches and PRs in our project. In our group, we submitted each point in the project checklist as issues on Github, which allowed us to assign ourselves to each issue and solve them. We then made branches for each issue, and when the issue was resolved we created pull requests for merging into the main branch. 
 
 ### Question 10
 
@@ -240,7 +240,7 @@ In order to get a complete copy of our development environment, one can run the 
 >
 > Answer:
 
---- question 10 fill here ---
+For our project we used DVC to manage our data, and it helped us by allowing us to share our data
 
 ### Question 11
 
