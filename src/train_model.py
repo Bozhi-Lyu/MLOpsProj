@@ -12,13 +12,14 @@ from torchvision import transforms
 import hydra
 from src.models.model import DeiTClassifier
 
+
 class CustomTensorDataset(Dataset):
     """
     TensorDataset with support of transforms.
 
     Extends the standard PyTorch Dataset to include transform capabilities,
-    which enables the data to be preprocessed bvia various transformations 
-    before the data is input into the model.   
+    which enables the data to be preprocessed bvia various transformations
+    before the data is input into the model.
     """
 
     def __init__(self, tensors: torch.Tensor, transform=None) -> None:
@@ -46,19 +47,18 @@ def main(config):
     Main function for training the model.
 
     Initializes the model and dataloaders, then continues to train and validate.
-    Evaluates the model's performance and saves the results as well as the final trained model. 
+    Evaluates the model's performance and saves the results as well as the final trained model.
     """
 
     # os.environ["CUDA_LAUNCH_BLOCKING"] = "1" # For CUDA 10.1
-    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":16:8" # For CUDA >= 10.2
+    os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":16:8"  # For CUDA >= 10.2
     # https://docs.nvidia.com/cuda/cublas/index.html#cublasApi_reproducibility
     torch.use_deterministic_algorithms(True)
     # make sure reproducibility.
 
-    config = config['hyperparameters']  
-    torch.manual_seed(config["seed"])    
-    wandb.init(project=config.project_name,
-               entity=config.user)
+    config = config["hyperparameters"]
+    torch.manual_seed(config["seed"])
+    wandb.init(project=config.project_name, entity=config.user)
 
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
@@ -73,25 +73,26 @@ def main(config):
     else:
         device = torch.device("cpu")
 
-    transform = transforms.Compose([
-        transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
-        transforms.RandomRotation(10),  # Rotate the image by up to 10 degrees
-        transforms.RandomResizedCrop(48, scale=(0.8, 1.0)),  # Zoom in on the image
-    ])
+    transform = transforms.Compose(
+        [
+            transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
+            transforms.RandomRotation(10),  # Rotate the image by up to 10 degrees
+            transforms.RandomResizedCrop(48, scale=(0.8, 1.0)),  # Zoom in on the image
+        ]
+    )
 
-    train_images = torch.load(config["data_path"] + "train_images.pt")  
+    train_images = torch.load(config["data_path"] + "train_images.pt")
     train_target = torch.load(config["data_path"] + "train_target.pt")
 
-    validation_images = torch.load(config["data_path"] + "validation_images.pt")  
+    validation_images = torch.load(config["data_path"] + "validation_images.pt")
     validation_target = torch.load(config["data_path"] + "validation_target.pt")
 
-    test_images = torch.load(config["data_path"] + "test_images.pt")  
+    test_images = torch.load(config["data_path"] + "test_images.pt")
     test_target = torch.load(config["data_path"] + "test_target.pt")
 
-
-    #train_set = TensorDataset(train_images, train_target)
-    #validation_set = TensorDataset(validation_images, validation_target)
-    #test_set = TensorDataset(test_images, test_target)
+    # train_set = TensorDataset(train_images, train_target)
+    # validation_set = TensorDataset(validation_images, validation_target)
+    # test_set = TensorDataset(test_images, test_target)
 
     # Create datasets
     train_set = CustomTensorDataset((train_images, train_target), transform=transform)
@@ -131,7 +132,7 @@ def main(config):
     # Initialize optimizer and loss criterion
     optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
     criterion = torch.nn.CrossEntropyLoss()
-    
+
     # Train the model
     history = []
 
@@ -216,13 +217,14 @@ def main(config):
             # Measure accuracy
             _, pred = torch.max(output, 1)
             correct += (pred == labels).sum().item()
-        
+
         accuracy = correct / len(test_set)
 
         logger.info("Test accuracy: {}".format(accuracy))
         wandb.log({"test_accuracy": accuracy})
 
         logger.info(f"Test accuracy: {accuracy * 100}%")
+
 
 # Execution
 if __name__ == "__main__":

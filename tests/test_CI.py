@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def test_function():
     return np.sum(np.random.rand(5))
 
