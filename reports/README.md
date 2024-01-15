@@ -289,7 +289,7 @@ In our project we used config files, and to load those we used both `OmegaConf` 
 >
 > Answer:
 
-In order to ensure reproducibility of experiments we used config files as mentioned in the previous question. This, in combination with the use of Git, allowed us to easily keep track of which files were used whenever we started training.
+In order to ensure reproducibility of experiments we used config files as mentioned in the previous question. This, in combination with the use of Git, allowed us to easily keep track of which parameters were used whenever we started training. In addition to this, we also keep track of the seed used for `torch`, which also ensures that we get the exact conditions that lead to our results.
 
 ### Question 14
 
