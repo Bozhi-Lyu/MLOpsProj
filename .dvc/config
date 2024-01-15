@@ -1,0 +1,4 @@
+[core]
+    remote = bucket
+['remote "bucket"']
+    url = gs://thebestbucketintheworld2/
