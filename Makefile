@@ -38,9 +38,9 @@ clean:
 
 ## Process raw data into processed data
 pull:
-	dvc pull
+	dvc pull --verbose
 
-data: 
+data: pull
 	python $(PROJECT_NAME)/data/make_dataset.py
 
 train: pull
