@@ -14,12 +14,13 @@ COPY pyproject.toml pyproject.toml
 
 # Copy your Git repository into the Docker image
 COPY . /app
-COPY models/ /app/models
+COPY models/ /app/models 
 # Change the working directory to the directory that contains your Git repository
 WORKDIR /app
 
 RUN pip install -r requirements.txt --no-cache-dir
 RUN pip install . --no-deps --no-cache-dir
+RUN dvc pull models/ --no-cache-dir
 
 EXPOSE 8080
 
