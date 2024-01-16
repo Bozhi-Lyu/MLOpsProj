@@ -1,7 +1,6 @@
 secret.env
 .env 
 data/ 
-models/
 outputs/
 venv/ 
 wandb/
