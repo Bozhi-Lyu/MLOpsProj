@@ -11,8 +11,8 @@ import PIL
 app = FastAPI()
 model_checkpoint = "models/saved_models/model.pt"
 # Load the trained model
-model = DeiTClassifier().to('cpu')
-model.load_state_dict(torch.load(model_checkpoint))
+model = DeiTClassifier()
+model.load_state_dict(torch.load(model_checkpoint, map_location=torch.device('cpu')))
 
 model.eval()
 
@@ -83,7 +83,3 @@ async def predict_image(file:UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-
-
-if __name__ == "__main__": # If the script is run directly
-    uvicorn.run(app, host="localhost") # Run the FastAPI app using uvicorn
