@@ -84,44 +84,6 @@ async def predict_image(file:UploadFile = File(...)):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-# @app.post("/predict_image/")
-# async def make_prediction(file: UploadFile = File(...)):
-#     try:
-#         # Read image as bytes
-#         with open('image.jpg', 'wb') as image:
-#             content = await file.read()
-#             image.write(content)
-#             image.close()
-
-#         image = PIL.Image.open('image.jpg')
-        
-#         # img = cv2.imread("image.jpg")
-#         # res = cv2.resize(img, (h, w))
-
-#         # response = {
-#         #     "input": data,
-#         #     "message": HTTPStatus.OK.phrase,
-#         #     "status-code": HTTPStatus.OK,
-#         # }
-
-#         # Make a prediction
-#         with torch.no_grad():
-#             outputs = model(image)
-#             # Convert outputs to probabilities and then to a list
-#             probabilities = torch.nn.functional.softmax(outputs, dim=1)
-#             confidences, predictions = torch.max(probabilities, 1)
-
-#             # Convert predictions to a Python list and return
-#             return {
-#                 "class_id": predictions.item(),
-#                 "confidence": confidences.item()
-#             }
-#     # If an error occurs
-#     except Exception as e:
-#         raise HTTPException(status_code=400, detail=str(e)) 
-
-
-# # make work for tensor
 
 if __name__ == "__main__": # If the script is run directly
     uvicorn.run(app, host="localhost") # Run the FastAPI app using uvicorn
