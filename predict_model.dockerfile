@@ -14,7 +14,6 @@ COPY pyproject.toml pyproject.toml
 
 # Copy your Git repository into the Docker image
 COPY . /app
-COPY models/ /app/models 
 # Change the working directory to the directory that contains your Git repository
 WORKDIR /app
 
