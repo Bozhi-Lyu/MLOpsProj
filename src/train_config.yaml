@@ -1,4 +1,3 @@
-
 hyperparameters: 
   batch_size: 32
   learning_rate: 0.001
@@ -9,5 +8,3 @@ hyperparameters:
   user: "thebestofthebest"
   seed: 1234
   data_path: 'data/processed/'
-
-

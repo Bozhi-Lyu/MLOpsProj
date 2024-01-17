@@ -7,72 +7,12 @@ import torch
 import tqdm
 import wandb
 import matplotlib.pyplot as plt
-from torch.utils.data import Dataset
 from torchvision import transforms
 import hydra
 from models.model import *
-import argparse
-from typing import Iterator
-import warnings
 
-class CustomTensorDataset(Dataset):
-    """
-    TensorDataset with support of transforms.
-
-    Extends the standard PyTorch Dataset to include transform capabilities,
-    which enables the data to be preprocessed bvia various transformations 
-    before the data is input into the model.   
-    """
-
-    def __init__(self, tensors: torch.Tensor, transform=None) -> None:
-        assert all(tensors[0].size(0) == tensor.size(0) for tensor in tensors)
-        self.tensors = tensors
-        self.transform = transform
-
-    def __getitem__(self, index):
-        x = self.tensors[0][index]
-
-        if self.transform:
-            x = self.transform(x)
-
-        y = self.tensors[1][index]
-
-        return x, y
-
-    def __len__(self):
-        return self.tensors[0].size(0)
-
-def parse_optimizer(
-        input: str, 
-        parameters: Iterator[torch.nn.parameter.Parameter], 
-        lr: float
-) -> torch.optim.Optimizer:
-    """
-    Parses string inputs to PyTorch optimizers.
-    Args:
-        input:         A string that specifies which optimizer should be used. 
-        parameters:    An iterator of model parameters. Intended to be the output
-                       of model.parameters()
-        lr: The learning rate used in the optimizer
-
-    Returns:
-        torch.optim.Optimizer: A optimizer as according to the input parameter.
-                               Defaults to using Adam if the input string
-                               is unrecognised.
-    """
-    if input == "adam":
-        return torch.optim.Adam(parameters, lr=lr)
-    elif input == "adamw":
-        return torch.optim.AdamW(parameters, lr=lr)
-    elif input == "adagrad":
-        return torch.optim.Adagrad(parameters, lr=lr)
-    elif input == "adadelta":
-        return torch.optim.Adadelta(parameters, lr=lr)
-    elif input == "sgd":
-        return torch.optim.SGD(parameters, lr=lr)
-    else: #default to adam
-        warnings.warn("Warning: input string in parse_optimizer unrecognised. Defaulting to Adam")
-        return torch.optim.Adam(parameters, lr=lr)
+# Imports from helper file
+from helper import extract_hyperparameters, parse_optimizer, CustomTensorDataset
 
 
 @hydra.main(config_name="train_config.yaml", config_path=".", version_base="1.2")
@@ -89,9 +29,9 @@ def main(config):
 
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
-
-
     logger.info("Training FER model")
+
+    lr, epochs, optim_name, batch_size = extract_hyperparameters(config)
 
     # os.environ["CUDA_LAUNCH_BLOCKING"] = "1" # For CUDA 10.1
     os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":16:8"  # For CUDA >= 10.2
@@ -146,7 +86,7 @@ def main(config):
 
     trainloader = torch.utils.data.DataLoader(
         train_set,
-        batch_size=config.batch_size,
+        batch_size=batch_size,
         shuffle=True,
         num_workers=config.num_workers,
         pin_memory=True,
@@ -155,7 +95,7 @@ def main(config):
 
     validationloader = torch.utils.data.DataLoader(
         validation_set,
-        batch_size=config.batch_size,
+        batch_size=batch_size,
         shuffle=False,
         num_workers=config.num_workers,
         pin_memory=True,
@@ -163,14 +103,14 @@ def main(config):
 
     testloader = torch.utils.data.DataLoader(
         test_set,
-        batch_size=config.batch_size,
+        batch_size=batch_size,
         shuffle=False,
         num_workers=config.num_workers,
         pin_memory=True,
     )
 
     # Initialize optimizer and loss criterion
-    optimizer = parse_optimizer(config.optimizer, model.parameters(), lr=config.learning_rate)
+    optimizer = parse_optimizer(optim_name, model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
     
     # Train the model
@@ -179,7 +119,7 @@ def main(config):
     logger.info("Starting training...")
 
     # Loop
-    for epoch in range(config.epochs):
+    for epoch in range(epochs):
         train_loss = 0
         val_loss = 0
         model.train()
