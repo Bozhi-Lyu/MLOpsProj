@@ -10,15 +10,16 @@ import matplotlib.pyplot as plt
 from torch.utils.data import Dataset
 from torchvision import transforms
 import hydra
-from models.model import *
+from src.models.model import DeiTClassifier
+
 
 class CustomTensorDataset(Dataset):
     """
     TensorDataset with support of transforms.
 
     Extends the standard PyTorch Dataset to include transform capabilities,
-    which enables the data to be preprocessed bvia various transformations 
-    before the data is input into the model.   
+    which enables the data to be preprocessed bvia various transformations
+    before the data is input into the model.
     """
 
     def __init__(self, tensors: torch.Tensor, transform=None) -> None:
@@ -46,7 +47,7 @@ def main(config):
     Main function for training the model.
 
     Initializes the model and dataloaders, then continues to train and validate.
-    Evaluates the model's performance and saves the results as well as the final trained model. 
+    Evaluates the model's performance and saves the results as well as the final trained model.
     """
 
     config = config["hyperparameters"]
@@ -73,8 +74,8 @@ def main(config):
     else:
         device = torch.device("cpu")
         logging.info("Training on CPU")
-    
-    # Define transformers 
+
+    # Define transformers
     transform = transforms.Compose(
         [
             transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
@@ -95,9 +96,9 @@ def main(config):
     test_images = torch.load(config["data_path"] + "test_images.pt")
     test_target = torch.load(config["data_path"] + "test_target.pt")
 
-    #train_set = TensorDataset(train_images, train_target)
-    #validation_set = TensorDataset(validation_images, validation_target)
-    #test_set = TensorDataset(test_images, test_target)
+    # train_set = TensorDataset(train_images, train_target)
+    # validation_set = TensorDataset(validation_images, validation_target)
+    # test_set = TensorDataset(test_images, test_target)
 
     # Create datasets
     train_set = CustomTensorDataset((train_images, train_target), transform=transform)
@@ -138,7 +139,7 @@ def main(config):
     # Initialize optimizer and loss criterion
     optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
     criterion = torch.nn.CrossEntropyLoss()
-    
+
     # Train the model
     history = []
 
@@ -231,6 +232,7 @@ def main(config):
         wandb.log({"test_accuracy": accuracy})
 
         logger.info(f"Test accuracy: {accuracy * 100}%")
+
 
 # Execution
 if __name__ == "__main__":
