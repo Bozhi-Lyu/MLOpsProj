@@ -1,0 +1,19 @@
+program: src/train_model.py
+method: random
+parameters:
+  learning_rate:
+    values: [0.001, 0.01, 0.1]
+  epochs:
+    values: [5, 10, 15]
+  optimizers:
+    values: ['adam', 'adamw', 'adagrad', 'adadelta','sgd']
+  batch_size:
+    distribution: 'q_log_uniform_values'
+    q: 8
+    min: 32
+    max: 256
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - ${args_no_hyphens}
