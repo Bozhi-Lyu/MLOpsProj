@@ -1,13 +1,13 @@
 import os
 import torch
-from tests import _PATH_MODEL, _PATH_DUMMY
+from tests import _TEST_ROOT, _PATH_MODEL, _PATH_DUMMY
 from src.models.model import DeiTClassifier
 
 
 def test_model():
     testmodel = DeiTClassifier()
 
-    model_path = os.path.join(_PATH_MODEL, "saved_models", "model.pt")
+    model_path = os.path.join(_TEST_ROOT, "dummymodel.pt")
     testmodel.load_state_dict(torch.load(model_path, map_location=torch.device("cpu")))
 
     processed_dir = os.path.join(_PATH_DUMMY, "processed/")
