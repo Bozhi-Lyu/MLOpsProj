@@ -1,7 +1,5 @@
 import os
-import pytest
 import torch
-import hydra
 from omegaconf import OmegaConf
 from src.train_model import main, CustomTensorDataset
 from tests import _TEST_ROOT, _PATH_DUMMY

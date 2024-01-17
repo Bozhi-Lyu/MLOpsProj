@@ -63,4 +63,8 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest
+        coverage run -m pytest tests/test_data.py
+        coverage run -m pytest tests/test_model.py
+        coverage run -m pytest tests/test_training.py
+        coverage report
+
