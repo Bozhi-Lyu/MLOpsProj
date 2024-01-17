@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from torchvision import transforms
 import hydra
 from models.model import *
+from omegaconf import OmegaConf
 
 # Imports from helper file
 from helper import extract_hyperparameters, parse_optimizer, CustomTensorDataset
@@ -174,12 +175,12 @@ def main(config):
     torch.save(model.state_dict(), "models/saved_models/model.pt")
 
     # Plot training curve
-    plt.plot(range(len(history)), history, label="Training Loss")
-    plt.xlabel("Steps")
-    plt.ylabel("Loss")
-    plt.title("Training Curve")
-    plt.legend()
-    plt.savefig("reports/figures/training_curve.png")
+    #plt.plot(range(len(history)), history, label="Training Loss")
+    #plt.xlabel("Steps")
+    #plt.ylabel("Loss")
+    #plt.title("Training Curve")
+    #plt.legend()
+    #plt.savefig("reports/figures/training_curve.png")
 
     # Test the model
     logger.info("Testing model...")
@@ -208,21 +209,20 @@ def main(config):
 
 # Execution
 if __name__ == "__main__":
-    '''
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--project", type=str, default="sweep-examples", help="project")
-    parser.add_argument(
-        "--learning_rate", type=float, default=0.001, help="learning rate used in optimizers."
-    )
-    parser.add_argument(
-        "--epochs", type=int, default=5, help="total epochs used for training."
-    )
-    parser.add_argument(
-        "--optimizers", type=str, default="adam", help="optimizer used for training."
-    )
-    parser.add_argument(
-        "--batch_size", type=int, default=64, help="batch size of data loaders"
-    )
-    args = parser.parse_args()
-    '''
-    main()
+    sweep_configuration = {
+        "method": "grid",
+        "metric": {"goal": "maximize", "name": "val_accuracy"},
+        'parameters': {
+            'learning_rate': {'values': [0.001, 0.01, 0.1]},
+            'epochs': {'values': [5, 10, 15]},
+            'optimizer': {'values': ['adam', 'adamw', 'adagrad', 'adadelta', 'sgd']},
+            'batch_size': {'values': [32, 64, 128, 256]
+            }
+        }
+    }
+
+    config = OmegaConf.load("src/train_config.yaml")["hyperparameters"]
+    sweep_id = wandb.sweep(sweep=sweep_configuration, project=config.project_name, entity=config.user)
+
+    wandb.agent(sweep_id, function=main, count=10)
+    #main()
