@@ -147,6 +147,7 @@ We used the third-party framework Huggingface in our project, with which we used
 > *complete copy of our development environment, one would have to run the following commands*
 >
 > Answer:
+
 We used `pip` for managing our dependencies. The list of dependencies can be generated using the command `pip list --format=freeze > requirements.txt`, which will generate a file containing all the packages used in this project. However, since this command lists every single package used with no regard to readability or the important packages that we actually use, we have provided a `requirements.txt` file that contains a clean version of this list.
 
 In order to get a complete copy of our development environment, one can run the following command:
@@ -195,7 +196,7 @@ For this project we have used the PEP8 standard across our files. The reason for
 >
 > Answer:
 
---- question 7 fill here ---
+Test input and output of shape. 
 
 ### Question 8
 
@@ -210,7 +211,7 @@ For this project we have used the PEP8 standard across our files. The reason for
 >
 > Answer:
 
---- question 8 fill here ---
+Approx. 70%
 
 ### Question 9
 
@@ -276,6 +277,7 @@ For our project we used DVC to manage our data, and it helped us by allowing us 
 > Answer:
 
 In our project we used config files, and to load those we used both `OmegaConf` and `Hydra`. `OmegaConf` was used to load the model parameters, since it returns the loaded parameters as a dict, which is beneficial for loading model parameters, and `Hydra` was used with the model training, as it can provides wrappers for use with functions.
+
 ### Question 13
 
 > **Reproducibility of experiments are important. Related to the last question, how did you secure that no information**
@@ -353,7 +355,7 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
---- question 17 fill here ---
+We used Bucket... 
 
 ### Question 18
 
@@ -377,7 +379,7 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
---- question 19 fill here ---
+![my_image](figures/Q19.png)
 
 ### Question 20
 
@@ -386,7 +388,7 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
---- question 20 fill here ---
+![my_image](figures/Q20.png)
 
 ### Question 21
 
@@ -395,7 +397,7 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
---- question 21 fill here ---
+![my_image](figures/Q21.png)
 
 ### Question 22
 
@@ -440,7 +442,7 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
---- question 24 fill here ---
+Anne Sophie used xxx credits, Bozhi used xxx credits, Tobias used xxx credits and Jakub used 6.95 credits. Thus, in total xxx credits was spend during development. 
 
 ## Overall discussion of project
 
@@ -461,7 +463,7 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
---- question 25 fill here ---
+I (Anne Sophie) is currently trying to make a sketch of this.
 
 ### Question 26
 
@@ -475,7 +477,7 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
---- question 26 fill here ---
+One was the inconsistent performance of tools across our various computers. This led to some work discrepancies, as the tool functioned well on some systems but not on others. To address this, we relied heavily on teamwork, where we shared solutions and tride troubleshoot collectively. We also asked for assistance from the TAs. 
 
 ### Question 27
 
