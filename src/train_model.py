@@ -45,7 +45,7 @@ class CustomTensorDataset(Dataset):
 def parse_optimizer(
         input: str, 
         parameters: Iterator[torch.nn.parameter.Parameter], 
-        learning_rate: float
+        lr: float
 ) -> torch.optim.Optimizer:
     """
     Parses string inputs to PyTorch optimizers.
@@ -53,7 +53,7 @@ def parse_optimizer(
         input:         A string that specifies which optimizer should be used. 
         parameters:    An iterator of model parameters. Intended to be the output
                        of model.parameters()
-        learning_rate: The learning rate used in the optimizer
+        lr: The learning rate used in the optimizer
 
     Returns:
         torch.optim.Optimizer: A optimizer as according to the input parameter.
@@ -61,24 +61,22 @@ def parse_optimizer(
                                is unrecognised.
     """
     if input == "adam":
-        return torch.optim.Adam(parameters, lr=learning_rate)
+        return torch.optim.Adam(parameters, lr=lr)
     elif input == "adamw":
-        return torch.optim.AdamW(parameters, lr=learning_rate)
+        return torch.optim.AdamW(parameters, lr=lr)
     elif input == "adagrad":
-        return torch.optim.Adagrad(parameters, lr=learning_rate)
+        return torch.optim.Adagrad(parameters, lr=lr)
     elif input == "adadelta":
-        return torch.optim.Adadelta(parameters, lr=learning_rate)
+        return torch.optim.Adadelta(parameters, lr=lr)
     elif input == "sgd":
-        return torch.optim.SGD(parameters, lr=learning_rate)
+        return torch.optim.SGD(parameters, lr=lr)
     else: #default to adam
         warnings.warn("Warning: input string in parse_optimizer unrecognised. Defaulting to Adam")
-        return torch.optim.Adam(parameters, lr=learning_rate)
-
-
+        return torch.optim.Adam(parameters, lr=lr)
 
 
 @hydra.main(config_name="train_config.yaml", config_path=".", version_base="1.2")
-def main(args, config):
+def main(config):
     """
     Main function for training the model.
 
@@ -87,7 +85,7 @@ def main(args, config):
     """
 
     config = config["hyperparameters"]
-    wandb.init(project=config.project_name, entity=config.user, config=config)
+    wandb.init(project=config.project_name, entity=config.user)
 
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
@@ -172,7 +170,7 @@ def main(args, config):
     )
 
     # Initialize optimizer and loss criterion
-    optimizer = parse_optimizer(args.optimizers, model.parameters(), lr=config.learning_rate)
+    optimizer = parse_optimizer(config.optimizer, model.parameters(), lr=config.learning_rate)
     criterion = torch.nn.CrossEntropyLoss()
     
     # Train the model
@@ -270,6 +268,7 @@ def main(args, config):
 
 # Execution
 if __name__ == "__main__":
+    '''
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--project", type=str, default="sweep-examples", help="project")
     parser.add_argument(
@@ -285,4 +284,5 @@ if __name__ == "__main__":
         "--batch_size", type=int, default=64, help="batch size of data loaders"
     )
     args = parser.parse_args()
-    main(args)
+    '''
+    main()

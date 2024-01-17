@@ -5,7 +5,7 @@ parameters:
     values: [0.001, 0.01, 0.1]
   epochs:
     values: [5, 10, 15]
-  optimizers:
+  optimizer:
     values: ['adam', 'adamw', 'adagrad', 'adadelta','sgd']
   batch_size:
     distribution: 'q_log_uniform_values'
