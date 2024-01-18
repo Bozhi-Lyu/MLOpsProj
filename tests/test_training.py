@@ -1,7 +1,8 @@
 import os
 import torch
 from omegaconf import OmegaConf
-from src.train_model import main, CustomTensorDataset
+from src.train_model import main
+from src.helper import CustomTensorDataset
 from tests import _TEST_ROOT, _PATH_DUMMY
 
 
