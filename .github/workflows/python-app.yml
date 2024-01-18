@@ -65,7 +65,7 @@ jobs:
       run: |
         coverage run -m pytest tests/test_data.py
         coverage run -m pytest tests/test_model.py
-        wandb login ${{ WANDB_API_KEY }}
+        wandb login ${{ secrets.WANDB_API_KEY }}
         coverage run -m pytest tests/test_training.py
         coverage report
 
