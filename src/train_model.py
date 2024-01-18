@@ -22,7 +22,7 @@ def main(config):
     Main function for training the model.
 
     Initializes the model and dataloaders, then continues to train and validate.
-    Evaluates the model's performance and saves the results as well as the final trained model. 
+    Evaluates the model's performance and saves the results as well as the final trained model.
     """
 
     config = config["hyperparameters"]
@@ -48,8 +48,8 @@ def main(config):
     else:
         device = torch.device("cpu")
         logging.info("Training on CPU")
-    
-    # Define transformers 
+
+    # Define transformers
     transform = transforms.Compose(
         [
             transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
@@ -70,9 +70,9 @@ def main(config):
     test_images = torch.load(config["data_path"] + "test_images.pt")
     test_target = torch.load(config["data_path"] + "test_target.pt")
 
-    #train_set = TensorDataset(train_images, train_target)
-    #validation_set = TensorDataset(validation_images, validation_target)
-    #test_set = TensorDataset(test_images, test_target)
+    # train_set = TensorDataset(train_images, train_target)
+    # validation_set = TensorDataset(validation_images, validation_target)
+    # test_set = TensorDataset(test_images, test_target)
 
     # Create datasets
     train_set = CustomTensorDataset((train_images, train_target), transform=transform)
@@ -113,7 +113,7 @@ def main(config):
     # Initialize optimizer and loss criterion
     optimizer = parse_optimizer(optim_name, model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
-    
+
     # Train the model
     history = []
 
@@ -206,6 +206,7 @@ def main(config):
         wandb.log({"test_accuracy": accuracy})
 
         logger.info(f"Test accuracy: {accuracy * 100}%")
+
 
 # Execution
 if __name__ == "__main__":
