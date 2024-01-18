@@ -1,10 +1,11 @@
-
 hyperparameters: 
   batch_size: 32
   learning_rate: 0.001
   epochs: 4
   num_workers: 6
+  optimizer: 'adam'
   project_name: "the-best-DeiT-FER"
   user: "thebestofthebest"
   seed: 1234
   data_path: 'data/processed/'
+  do_sweep: True
