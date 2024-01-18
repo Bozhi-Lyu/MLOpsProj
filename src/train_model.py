@@ -9,7 +9,7 @@ import wandb
 import matplotlib.pyplot as plt
 from torchvision import transforms
 import hydra
-from models.model import *
+from src.models.model import *
 from omegaconf import OmegaConf
 
 # Imports from helper file
