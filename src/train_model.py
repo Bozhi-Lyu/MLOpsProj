@@ -211,10 +211,11 @@ def main(config):
 if __name__ == "__main__":
     sweep_configuration = {
         "method": "grid",
-        "metric": {"goal": "maximize", "name": "val_accuracy"},
+        "name": "sweep",
+        "metric": {"goal": "minimize", "name": "train_loss"},
         'parameters': {
-            'learning_rate': {'values': [0.001, 0.01, 0.1]},
-            'epochs': {'values': [5, 10, 15]},
+            'learning_rate': {'values': [0.0001, 0.001, 0.01, 0.1]},
+            'epochs': {'values': [5, 10, 15, 20, 25, 30]},
             'optimizer': {'values': ['adam', 'adamw', 'adagrad', 'adadelta', 'sgd']},
             'batch_size': {'values': [32, 64, 128, 256]
             }
@@ -224,5 +225,5 @@ if __name__ == "__main__":
     config = OmegaConf.load("src/train_config.yaml")["hyperparameters"]
     sweep_id = wandb.sweep(sweep=sweep_configuration, project=config.project_name, entity=config.user)
 
-    wandb.agent(sweep_id, function=main, count=10)
+    wandb.agent(sweep_id, function=main, count=480)
     #main()
