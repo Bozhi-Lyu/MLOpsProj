@@ -12,3 +12,5 @@ dvc[gs]
 fastapi>=0.109.0
 uvicorn>=0.25.0
 python-multipart>=0.0.6
+pandas
+coverage>=7.4.0

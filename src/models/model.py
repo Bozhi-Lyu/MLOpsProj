@@ -5,7 +5,6 @@ import torch.nn.functional as F
 from transformers import DeiTForImageClassification
 from transformers import DeiTConfig
 from omegaconf import OmegaConf
-from typing import Any
 
 # Load configuration
 config = OmegaConf.load("src/models/model_config.yaml")["hyperparameters"]

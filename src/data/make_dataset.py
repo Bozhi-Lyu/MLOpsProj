@@ -1,6 +1,7 @@
 # Standard library imports
 import logging
 import sys
+import os
 
 # Related third-party imports
 import torch
@@ -28,7 +29,7 @@ def change_to_tensor(df: pd.DataFrame) -> torch.Tensor:
     return data
 
 
-def make_dataset(raw_dir="./data/raw/", processed_dir="./data/processed/"):
+def make_dataset(raw_dir="./data/raw/fer2013.csv", processed_dir="./data/processed"):
     """
     Process the dataset from a raw CSV file and save tensors to specified directories.
 
@@ -41,7 +42,7 @@ def make_dataset(raw_dir="./data/raw/", processed_dir="./data/processed/"):
     logger.info(f"Raw directory: {raw_dir}")
 
     # Reading dataset from CSV
-    df = pd.read_csv(raw_dir + "fer2013.csv")
+    df = pd.read_csv(raw_dir)
 
     # Splitting the dataset into training, validation, and test sets and converting to tensors
     train = change_to_tensor(df[df["Usage"] == "Training"]) / 255.0
@@ -66,12 +67,12 @@ def make_dataset(raw_dir="./data/raw/", processed_dir="./data/processed/"):
     logger.info(f"Processed directory: { processed_dir}")
 
     # Saving the processed data to the specified directory
-    torch.save(train, processed_dir + "train_images.pt")
-    torch.save(validation, processed_dir + "validation_images.pt")
-    torch.save(test, processed_dir + "test_images.pt")
-    torch.save(train_target, processed_dir + "train_target.pt")
-    torch.save(validation_target, processed_dir + "validation_target.pt")
-    torch.save(test_target, processed_dir + "test_target.pt")
+    torch.save(train, os.path.join(processed_dir, "train_images.pt"))
+    torch.save(validation, os.path.join(processed_dir, "validation_images.pt"))
+    torch.save(test, os.path.join(processed_dir, "test_images.pt"))
+    torch.save(train_target, os.path.join(processed_dir, "train_target.pt"))
+    torch.save(validation_target, os.path.join(processed_dir, "validation_target.pt"))
+    torch.save(test_target, os.path.join(processed_dir, "test_target.pt"))
 
 
 # Execution

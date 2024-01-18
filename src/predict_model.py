@@ -1,10 +1,8 @@
 # Related third-party imports
 import torch
 
-def predict(
-  model: torch.nn.Module,
-   dataloader: torch.utils.data.DataLoader
-) -> None:
+
+def predict(model: torch.nn.Module, dataloader: torch.utils.data.DataLoader) -> None:
     """
     Run prediction for a given model and dataloader.
 

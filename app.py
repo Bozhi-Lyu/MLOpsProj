@@ -3,7 +3,6 @@ from src.models.model import DeiTClassifier
 import torchvision.transforms as transforms
 
 import torch
-import uvicorn
 import PIL
 
 # Assumption is a tensor input
