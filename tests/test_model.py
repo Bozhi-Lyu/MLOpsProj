@@ -1,6 +1,6 @@
 import os
 import torch
-from tests import _TEST_ROOT, _PATH_MODEL, _PATH_DUMMY
+from tests import _TEST_ROOT, _PATH_DUMMY
 from src.models.model import DeiTClassifier
 
 
