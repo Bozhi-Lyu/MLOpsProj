@@ -223,7 +223,9 @@ if __name__ == "__main__":
     }
 
     config = OmegaConf.load("src/train_config.yaml")["hyperparameters"]
-    sweep_id = wandb.sweep(sweep=sweep_configuration, project=config.project_name, entity=config.user)
+    if config.do_sweep:
+        sweep_id = wandb.sweep(sweep=sweep_configuration, project=config.project_name, entity=config.user)
 
-    wandb.agent(sweep_id, function=main, count=480)
-    #main()
+        wandb.agent(sweep_id, function=main, count=480)
+    else:
+        main()

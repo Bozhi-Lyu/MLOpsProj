@@ -8,3 +8,4 @@ hyperparameters:
   user: "thebestofthebest"
   seed: 1234
   data_path: 'data/processed/'
+  do_sweep: True
