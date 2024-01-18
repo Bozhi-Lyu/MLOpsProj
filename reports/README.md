@@ -443,7 +443,7 @@ We did not manage to implement monitoring for our deployed model. However, monit
 >
 > Answer:
 
-Anne Sophie used 4.18 credits, Bozhi used xxx credits, Tobias used xxx credits and Jakub used 6.95 credits. Thus, in total xxx credits was spend during development. 
+Anne Sophie used 4.19 credits, Bozhi used xxx credits, Tobias used 4.09 credits and Jakub used 7.12 credits. Thus, in total xxx credits was spend during development. This results in a total of xxx. The most expensive service was Cloud Storage, secondly Vertex AI and thirdly Compute Engine. 
 
 ## Overall discussion of project
 
