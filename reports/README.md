@@ -74,29 +74,29 @@ end of the project.
 
 * [X] Write unit tests related to the data part of your code
 * [X] Write unit tests related to model construction and or model training
-* [ ] Calculate the coverage.
+* [X] Calculate the coverage.
 * [X] Get some continuous integration running on the github repository
 * [X] Create a data storage in GCP Bucket for you data and preferable link this with your data version control setup
-* [ ] Create a trigger workflow for automatically building your docker images
-* [ ] Get your model training in GCP using either the Engine or Vertex AI
-* [ ] Create a FastAPI application that can do inference using your model
+* [X] Create a trigger workflow for automatically building your docker images
+* [X] Get your model training in GCP using either the Engine or Vertex AI
+* [X] Create a FastAPI application that can do inference using your model
 * [ ] If applicable, consider deploying the model locally using torchserve
-* [ ] Deploy your model in GCP using either Functions or Run as the backend
+* [X] Deploy your model in GCP using either Functions or Run as the backend
 
 ### Week 3
 
 * [ ] Check how robust your model is towards data drifting
-* [ ] Setup monitoring for the system telemetry of your deployed model
-* [ ] Setup monitoring for the performance of your deployed model
+* [X] Setup monitoring for the system telemetry of your deployed model
+* [X] Setup monitoring for the performance of your deployed model
 * [ ] If applicable, play around with distributed data loading
 * [ ] If applicable, play around with distributed model training
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed
 
 ### Additional
 
-* [ ] Revisit your initial project description. Did the project turn out as you wanted?
-* [ ] Make sure all group members have a understanding about all parts of the project
-* [ ] Uploaded all your code to github
+* [X] Revisit your initial project description. Did the project turn out as you wanted?
+* [X] Make sure all group members have a understanding about all parts of the project
+* [X] Uploaded all your code to github
 
 ## Group information
 
@@ -324,8 +324,6 @@ In order to ensure reproducibility of experiments we used config files as mentio
 
 We created two dockerfiles: one for the training and one for the prediction. We used standard Docker commands for to build and run these containers, like `docker build` and `docker run`, which facilitated a modular and efficient development process. This setup provided a streamlined, efficient pipeline, as it sperated the resource-intensive training phase from the leaner prediction phase.
 
---- question 15 fill here ---
-
 ### Question 16
 
 > **When running into bugs while trying to run your experiments, how did you perform debugging? Additionally, did you**
@@ -339,7 +337,7 @@ We created two dockerfiles: one for the training and one for the prediction. We 
 >
 > Answer:
 
---- question 16 fill here ---
+When we encountered issues we needed to fix we had a collaborative approach, especially if an issue couldn't be resolved individually. Our individual approaches varied - some used traditional methods for instance insert print statements to  track variable values, whereas others relied more on the solutions provided by the IDE.  
 
 ## Working in the cloud
 
@@ -356,7 +354,9 @@ We created two dockerfiles: one for the training and one for the prediction. We 
 >
 > Answer:
 
-We used Bucket... 
+We used the following two services: Engine and Bucket. Engine is used for... and Bucket is used for...
+
+--- question 17 fill here ---
 
 ### Question 18
 
@@ -429,7 +429,7 @@ We used Bucket...
 >
 > Answer:
 
-We did not manage to implement monitoring for our deployed model. However, monitoring plays a crucial role in maintaining the longevity and effectiveness of any application, especially those that involve complex models. First and foremost, we would be able to track key performance metrics, error rates, and user interaction patterns over time. Additionally, it would enable us to detect any drift in the model's performance due to underlying data or user behavior, which his is particularly important to ensure that the model remains relevant and accurate over time. 
+We managed to implement monitoring for our deployed model. Monitoring plays a crucial role in maintaining the longevity and effectiveness of any application, especially those that involve complex models. First and foremost, we are able to track key performance metrics, error rates, and user interaction patterns over time. Additionally, it  enables us to detect any drift in the model's performance due to underlying data or user behavior, which is particularly important to ensure that the model remains relevant and accurate over time. 
 
 ### Question 24
 
@@ -443,7 +443,7 @@ We did not manage to implement monitoring for our deployed model. However, monit
 >
 > Answer:
 
-Anne Sophie used 4.19 credits, Bozhi used xxx credits, Tobias used 4.09 credits and Jakub used 7.12 credits. Thus, in total xxx credits was spend during development. This results in a total of xxx. The most expensive service was Cloud Storage, secondly Vertex AI and thirdly Compute Engine. 
+Anne Sophie used 4.19 credits, Bozhi used 0 credits, Tobias used 4.09 credits and Jakub used 7.12 credits. Thus, in total 15.40 credits was spend during development. The most expensive service was Cloud Storage, secondly Vertex AI and thirdly Compute Engine. 
 
 ## Overall discussion of project
 
