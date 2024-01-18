@@ -319,9 +319,10 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Example:
 > *For our project we developed several images: one for training, inference and deployment. For example to run the*
-> *training docker image: `docker run trainer:latest lr=1e-3 batch_size=64`. Link to docker file: <weblink>*
 >
 > Answer:
+
+We created two dockerfiles: one for the training and one for the prediction. We used standard Docker commands for to build and run these containers, like `docker build` and `docker run`, which facilitated a modular and efficient development process. This setup provided a streamlined, efficient pipeline, as it sperated the resource-intensive training phase from the leaner prediction phase.
 
 --- question 15 fill here ---
 
@@ -428,7 +429,7 @@ We used Bucket...
 >
 > Answer:
 
---- question 23 fill here ---
+We did not manage to implement monitoring for our deployed model. However, monitoring plays a crucial role in maintaining the longevity and effectiveness of any application, especially those that involve complex models. First and foremost, we would be able to track key performance metrics, error rates, and user interaction patterns over time. Additionally, it would enable us to detect any drift in the model's performance due to underlying data or user behavior, which his is particularly important to ensure that the model remains relevant and accurate over time. 
 
 ### Question 24
 
