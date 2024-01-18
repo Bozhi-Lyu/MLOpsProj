@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import Dataset
 from torchvision import transforms
 import hydra
-from src.models.model import DeiTClassifier
+from models.model import DeiTClassifier
 
 
 class CustomTensorDataset(Dataset):
