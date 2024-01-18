@@ -9,7 +9,7 @@ import wandb
 import matplotlib.pyplot as plt
 from torchvision import transforms
 import hydra
-from src.models.model import *
+from models.model import DeiTClassifier
 from omegaconf import OmegaConf
 
 # Imports from helper file
