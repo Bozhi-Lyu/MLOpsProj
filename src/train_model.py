@@ -9,11 +9,17 @@ import wandb
 import matplotlib.pyplot as plt
 from torchvision import transforms
 import hydra
-from src.models.model import *
+
+# super quick fix for imports dont judge me
+try:
+    from src.models.model import *
+    from src.helper import extract_hyperparameters, parse_optimizer, CustomTensorDataset
+except: 
+    from models.model import *
+    from helper import extract_hyperparameters, parse_optimizer, CustomTensorDataset
+
 from omegaconf import OmegaConf
 
-# Imports from helper file
-from src.helper import extract_hyperparameters, parse_optimizer, CustomTensorDataset
 
 
 @hydra.main(config_name="train_config.yaml", config_path=".", version_base="1.2")
