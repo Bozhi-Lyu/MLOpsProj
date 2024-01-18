@@ -211,7 +211,7 @@ def main(config):
 # Execution
 if __name__ == "__main__":
     sweep_configuration = {
-        "method": "grid",
+        "method": "random",
         "name": "sweep",
         "metric": {"goal": "minimize", "name": "train_loss"},
         'parameters': {
@@ -227,6 +227,6 @@ if __name__ == "__main__":
     if config.do_sweep:
         sweep_id = wandb.sweep(sweep=sweep_configuration, project=config.project_name, entity=config.user)
 
-        wandb.agent(sweep_id, function=main, count=480)
+        wandb.agent(sweep_id, function=main, count=240)
     else:
         main()
