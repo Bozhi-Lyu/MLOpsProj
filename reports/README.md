@@ -443,7 +443,7 @@ We did not manage to implement monitoring for our deployed model. However, monit
 >
 > Answer:
 
-Anne Sophie used xxx credits, Bozhi used xxx credits, Tobias used xxx credits and Jakub used 6.95 credits. Thus, in total xxx credits was spend during development. 
+Anne Sophie used 4.18 credits, Bozhi used xxx credits, Tobias used xxx credits and Jakub used 6.95 credits. Thus, in total xxx credits was spend during development. 
 
 ## Overall discussion of project
 
@@ -464,7 +464,9 @@ Anne Sophie used xxx credits, Bozhi used xxx credits, Tobias used xxx credits an
 >
 > Answer:
 
-I (Anne Sophie) is currently trying to make a sketch of this.
+![my_image](figures/Illustration.png)
+
+The diagram depicts a continuous integration and deployment pipeline for our machine learning system. Developers commit code to GitHub, which triggers automated tests. Merged changes lead to Docker container image builds, which are then stored in a registry. Our model is trained using Vertex AI, with configuration managed by Hydra and experiment tracking by W&B. The trained model is served through FastAPI, running on Google Cloud's Cloud Run. Users can pull the latest code from GitHub and retrieve updated Docker images to run the application locally. This setup facilitates efficient development, testing, training, and deployment of ML models, ensuring a streamlined process from code changes to model serving.
 
 ### Question 26
 
