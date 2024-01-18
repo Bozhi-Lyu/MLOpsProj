@@ -13,7 +13,7 @@ from src.models.model import *
 from omegaconf import OmegaConf
 
 # Imports from helper file
-from helper import extract_hyperparameters, parse_optimizer, CustomTensorDataset
+from src.helper import extract_hyperparameters, parse_optimizer, CustomTensorDataset
 
 
 @hydra.main(config_name="train_config.yaml", config_path=".", version_base="1.2")
