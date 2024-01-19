@@ -359,9 +359,8 @@ When we encountered issues we needed to fix we had a collaborative approach, esp
 >
 > Answer:
 
-We used the following two services: Engine and Bucket. Engine is used for... and Bucket is used for...
+We used the following services: Bucket, Vertex AI, Container Registry, Cloud Run. Bucket is used for DVC data versioning, Container registry for storing and building train and predict images, Vertex AI for running train containers (and doing parameter search), and Cloud run for running FastAPI prediction and serving the model online. We use monitoring and alert systems for the Cloud Run to track the model in production over different metrics and amount of responses.
 
---- question 17 fill here ---
 
 ### Question 18
 
@@ -376,7 +375,9 @@ We used the following two services: Engine and Bucket. Engine is used for... and
 >
 > Answer:
 
---- question 18 fill here ---
+We used Compute engine for running early instances of training and predict containers.
+We used e2-medium VM with CPU architecture. The size of the disc was 10GB. It was perfect for our reasonably sized data and models and although it generated the most cost the size of the VM made us save a lot of money.
+It was useful for debugging and getting familiar with the structure of Google Cloud but did not end up in the final pipeline. We omitted the compute engine in favor of vertex ai and cloud run for serving models. 
 
 ### Question 19
 
