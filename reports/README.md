@@ -308,7 +308,6 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
---- question 14 fill here ---
 ![my_image](figures/sweep-charts.png)
 As seen in the first image, we have tracked training loss, validation accuracy and test accuracy. The model was shown to train well, however the model was not able to predict well as shown in both the validation and test accuracy charts. The models inability to predict well could be due to the size of model being too small, as well as the data being affected by a majority class. This leads to the model predicting only one class and reducing the effectiveness of the model.
 
@@ -511,7 +510,6 @@ The main issues was to work out how to use the different tools, especially the C
 >
 > Answer:
 
---- question 27 fill here ---
 s183478 was in charge of setting up the initial cookiecutter project, local building of docker files, continuous integration on Github, and Weights & Biases sweeping experimetation.
 
 s232251
