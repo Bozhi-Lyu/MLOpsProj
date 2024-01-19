@@ -309,6 +309,11 @@ In order to ensure reproducibility of experiments we used config files as mentio
 > Answer:
 
 --- question 14 fill here ---
+![my_image](figures/sweep-charts.png)
+As seen in the first image, we have tracked training loss, validation accuracy and test accuracy. The model was shown to train well, however the model was not able to predict well as shown in both the validation and test accuracy charts. The models inability to predict well could be due to the size of model being too small, as well as the data being affected by a majority class. This leads to the model predicting only one class and reducing the effectiveness of the model.
+
+![my_image](figures/sweep-explore.png)
+In this second image we try to explore optimal hyperparameters using the Sweep functionality from Weights & Biases, which allows us to randomly select certain hyperparameters and create runs based on those. As shown in the image, we try randomising the epoch count, the learning rate, and the optimizers. We initialily also varied the batch size, but we saw that it didn't affect the training, and so we kept that fixed. We can see that most of the configurations converge with a training loss around 1.875, but one configuration managed to achieve a lower loss, namely one using SGD optimizer, 20 epochs, and a low learning rate.
 
 ### Question 15
 
@@ -322,7 +327,7 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
-We created two dockerfiles: one for the training and one for the prediction. We used standard Docker commands for to build and run these containers, like `docker build` and `docker run`, which facilitated a modular and efficient development process. This setup provided a streamlined, efficient pipeline, as it sperated the resource-intensive training phase from the leaner prediction phase.
+We created two dockerfiles: one for the training and one for the prediction. We used standard Docker commands for to build and run these containers, like `docker build` and `docker run`, which facilitated a modular and efficient development process. This setup provided a streamlined, efficient pipeline, as it seperated the resource-intensive training phase from the leaner prediction phase.
 
 ### Question 16
 
