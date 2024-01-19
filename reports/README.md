@@ -309,7 +309,11 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
---- question 14 fill here ---
+![my_image](figures/sweep-charts.png)
+As seen in the first image, we have tracked training loss, validation accuracy and test accuracy. The model was shown to train well, however the model was not able to predict well as shown in both the validation and test accuracy charts. The models inability to predict well could be due to the size of model being too small, as well as the data being affected by a majority class. This leads to the model predicting only one class and reducing the effectiveness of the model.
+
+![my_image](figures/sweep-explore.png)
+In this second image we try to explore optimal hyperparameters using the Sweep functionality from Weights & Biases, which allows us to randomly select certain hyperparameters and create runs based on those. As shown in the image, we try randomising the epoch count, the learning rate, and the optimizers. We initialily also varied the batch size, but we saw that it didn't affect the training, and so we kept that fixed. We can see that most of the configurations converge with a training loss around 1.875, but one configuration managed to achieve a lower loss, namely one using SGD optimizer, 20 epochs, and a low learning rate.
 
 ### Question 15
 
@@ -323,7 +327,7 @@ In order to ensure reproducibility of experiments we used config files as mentio
 >
 > Answer:
 
-We created two dockerfiles: one for the training and one for the prediction. We used standard Docker commands for to build and run these containers, like `docker build` and `docker run`, which facilitated a modular and efficient development process. This setup provided a streamlined, efficient pipeline, as it sperated the resource-intensive training phase from the leaner prediction phase.
+We created two dockerfiles: one for the training and one for the prediction. We used standard Docker commands for to build and run these containers, like `docker build` and `docker run`, which facilitated a modular and efficient development process. This setup provided a streamlined, efficient pipeline, as it seperated the resource-intensive training phase from the leaner prediction phase.
 
 ### Question 16
 
@@ -338,7 +342,7 @@ We created two dockerfiles: one for the training and one for the prediction. We 
 >
 > Answer:
 
---- question 16 fill here ---
+When we encountered issues we needed to fix we had a collaborative approach, especially if an issue couldn't be resolved individually. Our individual approaches varied - some used traditional methods for instance insert print statements to track variable values, whiles others relied more on the solutions provided by the IDE. The traditional approach is easy and can many times help narrow down where the problem happens but not the best way to do it when we have a lot of code and dependencies - we kept this in mind and only used the traditional method for small stuff.
 
 ## Working in the cloud
 
@@ -355,7 +359,8 @@ We created two dockerfiles: one for the training and one for the prediction. We 
 >
 > Answer:
 
-We used Bucket... 
+We used the following services: Bucket, Vertex AI, Container Registry, Cloud Run. Bucket is used for DVC data versioning, Container registry for storing and building train and predict images, Vertex AI for running train containers (and doing parameter search), and Cloud run for running FastAPI prediction and serving the model online. We use monitoring and alert systems for the Cloud Run to track the model in production over different metrics and amount of responses.
+
 
 ### Question 18
 
@@ -370,7 +375,9 @@ We used Bucket...
 >
 > Answer:
 
---- question 18 fill here ---
+We used Compute engine for running early instances of training and predict containers.
+We used e2-medium VM with CPU architecture. The size of the disc was 10GB. It was perfect for our reasonably sized data and models and although it generated the most cost the size of the VM made us save a lot of money.
+It was useful for debugging and getting familiar with the structure of Google Cloud but did not end up in the final pipeline. We omitted the compute engine in favor of vertex ai and cloud run for serving models. 
 
 ### Question 19
 
@@ -413,7 +420,15 @@ We used Bucket...
 >
 > Answer:
 
---- question 22 fill here ---
+We did manage to deploy our model in the cloud using FastAPI and Cloud Run, but we didn't deploy it locally beforehand. While it could have been beneficial to do local deployments in order to see if the deployment is working as intended, we decided to prioritise the cloud deployment. In order to use the deployed model, one could either go to the website in which it is hosted (https://predict-nzzyxeyodq-ew.a.run.app/docs), or call the following curl command:
+
+```
+curl -X 'POST' \
+  'https://predict-nzzyxeyodq-ew.a.run.app/predict_image/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@test.png;type=image/png'
+```
 
 ### Question 23
 
@@ -428,7 +443,7 @@ We used Bucket...
 >
 > Answer:
 
-We did not manage to implement monitoring for our deployed model. However, monitoring plays a crucial role in maintaining the longevity and effectiveness of any application, especially those that involve complex models. First and foremost, we would be able to track key performance metrics, error rates, and user interaction patterns over time. Additionally, it would enable us to detect any drift in the model's performance due to underlying data or user behavior, which his is particularly important to ensure that the model remains relevant and accurate over time. 
+We managed to implement monitoring for our deployed model in GCP. Monitoring plays a crucial role in maintaining the longevity and effectiveness of any application, especially those that involve complex models. First and foremost, we are able to track key performance metrics, error rates and performance over time. Additionally, it  enables us to detect any drift in the model's performance due to underlying data or user behavior, which is particularly important to ensure that the model remains relevant and accurate over time. Such problems are unique to ML applications and needs to be handled separately. A fun example related to this topic is ChatGPT where users have reported a noticeable drop in its response quality.
 
 ### Question 24
 
@@ -442,7 +457,7 @@ We did not manage to implement monitoring for our deployed model. However, monit
 >
 > Answer:
 
-Anne Sophie used 4.19 credits, Bozhi used xxx credits, Tobias used 4.09 credits and Jakub used 7.12 credits. Thus, in total xxx credits was spend during development. This results in a total of xxx. The most expensive service was Cloud Storage, secondly Vertex AI and thirdly Compute Engine. 
+Anne Sophie used 4.19 credits, Bozhi used 0 credits, Tobias used 4.09 credits and Jakub used 7.12 credits. Thus, in total 15.40 credits was spend during development. The most expensive service was Cloud Storage, secondly Vertex AI and thirdly Compute Engine. 
 
 ## Overall discussion of project
 
@@ -479,7 +494,7 @@ The diagram depicts a continuous integration and deployment pipeline for our mac
 >
 > Answer:
 
-One was the inconsistent performance of tools across our various computers. This led to some work discrepancies, as the tool functioned well on some systems but not on others. To address this, we relied heavily on teamwork, where we shared solutions and tride troubleshoot collectively. We also asked for assistance from the TAs. 
+The main issues was to work out how to use the different tools, especially the Cloud based ones. In this course we have to learn and apply a lot of new tools, but on basic level and in relation to this deliverable. The complexity definitly increased as we needed to comprehend not only the individual tools, but also their interdependencies and collective functionality within our scope. This situation undoubtedly led to a series of notable hurdles, which in turn consumed a considerable amount of our time. This was particularly critical in terms of time management, a crucial aspect in the context of a condensed three-week course where every moment is valuable. Another issue that appeard multiple times was the inconsistent performance of tools across our various computers. This led to some work discrepancies, as the tool functioned well on some systems but not on others. To address this, we relied heavily on teamwork, where we shared solutions and tried to troubleshoot collectively. We also asked for assistance from the TAs. The varying performance of our tools across different computers also consumed a considerable amount of time which we could have used elsewhere. However, this is to be expected based on our individual experience, as this has been an issues that has arrised in other courses as well.
 
 ### Question 27
 
@@ -496,4 +511,10 @@ One was the inconsistent performance of tools across our various computers. This
 >
 > Answer:
 
---- question 27 fill here ---
+s183478 was in charge of setting up the initial cookiecutter project, local building of docker files, continuous integration on Github, and Weights & Biases sweeping experimetation.
+
+s232251
+
+s194274
+
+s230212 was in charge of POC model and configuration files, DVC, creating triggers, orchestrating training on vertex ai and serving model on cloud run, setting up telemetry and monitoring performance. 
