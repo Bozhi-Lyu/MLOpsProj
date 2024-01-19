@@ -337,7 +337,7 @@ We created two dockerfiles: one for the training and one for the prediction. We 
 >
 > Answer:
 
-When we encountered issues we needed to fix we had a collaborative approach, especially if an issue couldn't be resolved individually. Our individual approaches varied - some used traditional methods for instance insert print statements to  track variable values, whereas others relied more on the solutions provided by the IDE.  
+When we encountered issues we needed to fix we had a collaborative approach, especially if an issue couldn't be resolved individually. Our individual approaches varied - some used traditional methods for instance insert print statements to track variable values, whiles others relied more on the solutions provided by the IDE. The traditional approach is easy and can many times help narrow down where the problem happens but not the best way to do it when we have a lot of code and dependencies - we kept this in mind and only used the traditional method for small stuff.
 
 ## Working in the cloud
 
