@@ -27,3 +27,8 @@ The pretrained model will be taken from huggingface's model repository and fine-
 
 Depending on the face-alignment model we use (deep learning or openCV) we will either use the pretrained model or opencv
 to align the faces in the image, so there won't be any training done in this part.
+
+## Automate testing
+Unit tests in the CI process cover aspects of data preprocessing, model building and training. We test on a random subset of the protected raw dataset and training models where the `state_dict` is randomized as well.
+
+We use [`pytest`](https://docs.pytest.org/) framework in CI and obtain a 97% code coverage. Besides, GitHub Secrets are used to store and access the api-key of `wandb` used in traing script in the automate testing.
