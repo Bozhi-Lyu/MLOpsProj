@@ -494,7 +494,7 @@ The diagram depicts a continuous integration and deployment pipeline for our mac
 >
 > Answer:
 
-One was the inconsistent performance of tools across our various computers. This led to some work discrepancies, as the tool functioned well on some systems but not on others. To address this, we relied heavily on teamwork, where we shared solutions and tride troubleshoot collectively. We also asked for assistance from the TAs. 
+The main issues was to work out how to use the different tools, especially the Cloud based ones. In this course we have to learn and apply a lot of new tools, but on basic level and in relation to this deliverable. The complexity definitly increased as we needed to comprehend not only the individual tools, but also their interdependencies and collective functionality within our scope. This situation undoubtedly led to a series of notable hurdles, which in turn consumed a considerable amount of our time. This was particularly critical in terms of time management, a crucial aspect in the context of a condensed three-week course where every moment is valuable. Another issue that appeard multiple times was the inconsistent performance of tools across our various computers. This led to some work discrepancies, as the tool functioned well on some systems but not on others. To address this, we relied heavily on teamwork, where we shared solutions and tried to troubleshoot collectively. We also asked for assistance from the TAs. The varying performance of our tools across different computers also consumed a considerable amount of time which we could have used elsewhere. However, this is to be expected based on our individual experience, as this has been an issues that has arrised in other courses as well.
 
 ### Question 27
 
