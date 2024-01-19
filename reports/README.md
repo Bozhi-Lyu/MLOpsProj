@@ -196,7 +196,7 @@ For this project we have used the PEP8 standard across our files. The reason for
 >
 > Answer:
 
-Test input and output of shape. 
+Tests cover the shape of tensors after data preprocessing, input and output of trained model and the correct running of training script. We test on a random subset of the protected raw dataset and training models where the state_dict is randomized as well. 
 
 ### Question 8
 
@@ -211,7 +211,7 @@ Test input and output of shape.
 >
 > Answer:
 
-Approx. 70%
+We obtain a 97% code coverage. However, the coverage won't promise a bug-free code because it only focus on if the code is executed in test. It doesn't make sure the code run correctly in all conditions, nor does it guarantee no logical errors. 
 
 ### Question 9
 
@@ -257,7 +257,7 @@ For our project we used DVC to manage our data, and it helped us by allowing us 
 >
 > Answer:
 
---- question 11 fill here ---
+We run unittesting using `pytest` and linting by `flake8` and `ruff` in CI process. We test on ubuntu, windows and macos and make full use of pip cache for dependencies installation. Please check this link for example. https://github.com/Bozhi-Lyu/MLOpsProj/actions/runs/7569102665/job/20611683475?pr=52 
 
 ## Running code and tracking experiments
 
