@@ -512,3 +512,10 @@ One was the inconsistent performance of tools across our various computers. This
 > Answer:
 
 --- question 27 fill here ---
+s183478 was in charge of setting up the initial cookiecutter project, local building of docker files, continuous integration on Github, and Weights & Biases sweeping experimetation.
+
+s232251
+
+s194274
+
+s230212
