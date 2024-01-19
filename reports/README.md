@@ -522,10 +522,12 @@ The main issues was to work out how to use the different tools, especially the C
 >
 > Answer:
 
+Everyone contributed to the project and the report.
+
 s183478 was in charge of setting up the initial cookiecutter project, local building of docker files, continuous integration on Github, and Weights & Biases sweeping experimetation.
 
 s232251 was in charge of data preprocessing, writing unit testing and tests related setup in Github Action.
 
-s194274
+s194274 was responsible for ensuring adherence to good coding practices as per PEP8 guidelines during the project, handling a portion of code development with appropriate documentation, and initiating the FastAPI deployment.
 
 s230212 was in charge of POC model and configuration files, DVC, creating triggers, orchestrating training on vertex ai and serving model on cloud run, setting up telemetry and monitoring performance. 
