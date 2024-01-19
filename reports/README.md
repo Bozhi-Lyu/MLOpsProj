@@ -518,4 +518,4 @@ s232251
 
 s194274
 
-s230212
+s230212 was in charge of POC model and configuration files, DVC, creating triggers, orchestrating training on vertex ai and serving model on cloud run, setting up telemetry and monitoring performance. 
