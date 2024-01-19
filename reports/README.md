@@ -327,7 +327,7 @@ In this second image we try to explore optimal hyperparameters using the Sweep f
 >
 > Answer:
 
-We created two dockerfiles: one for the training and one for the prediction. We used standard Docker commands for to build and run these containers, like `docker build` and `docker run`, which facilitated a modular and efficient development process. This setup provided a streamlined, efficient pipeline, as it sperated the resource-intensive training phase from the leaner prediction phase.
+We created two dockerfiles: one for the training and one for the prediction. We used standard Docker commands for to build and run these containers, like `docker build` and `docker run`, which facilitated a modular and efficient development process. This setup provided a streamlined, efficient pipeline, as it seperated the resource-intensive training phase from the leaner prediction phase.
 
 ### Question 16
 
