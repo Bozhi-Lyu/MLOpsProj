@@ -524,7 +524,7 @@ The main issues was to work out how to use the different tools, especially the C
 
 s183478 was in charge of setting up the initial cookiecutter project, local building of docker files, continuous integration on Github, and Weights & Biases sweeping experimetation.
 
-s232251
+s232251 was in charge of data preprocessing, writing unit testing and tests related setup in Github Action.
 
 s194274
 
