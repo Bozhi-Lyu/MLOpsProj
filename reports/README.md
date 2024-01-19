@@ -443,7 +443,7 @@ curl -X 'POST' \
 >
 > Answer:
 
-We managed to implement monitoring for our deployed model. Monitoring plays a crucial role in maintaining the longevity and effectiveness of any application, especially those that involve complex models. First and foremost, we are able to track key performance metrics, error rates, and user interaction patterns over time. Additionally, it  enables us to detect any drift in the model's performance due to underlying data or user behavior, which is particularly important to ensure that the model remains relevant and accurate over time. 
+We managed to implement monitoring for our deployed model in GCP. Monitoring plays a crucial role in maintaining the longevity and effectiveness of any application, especially those that involve complex models. First and foremost, we are able to track key performance metrics, error rates and performance over time. Additionally, it  enables us to detect any drift in the model's performance due to underlying data or user behavior, which is particularly important to ensure that the model remains relevant and accurate over time. Such problems are unique to ML applications and needs to be handled separately.
 
 ### Question 24
 
