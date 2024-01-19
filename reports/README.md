@@ -196,7 +196,7 @@ For this project we have used the PEP8 standard across our files. The reason for
 >
 > Answer:
 
-Tests cover the shape of tensors after data preprocessing, input and output of trained model and the correct running of training script. We test on a random subset of the protected raw dataset and training models where the state_dict is randomized as well. 
+Unit tests cover the aspects of shape-checking of tensors after data preprocessing, input and output of trained models and the correct running of training script. In order to protect the raw data, we test on a random subset of the protected raw dataset, and training models where the `state_dict` is randomized as well. 
 
 ### Question 8
 
@@ -211,7 +211,8 @@ Tests cover the shape of tensors after data preprocessing, input and output of t
 >
 > Answer:
 
-We obtain a 97% code coverage. However, the coverage won't promise a bug-free code because it only focus on if the code is executed in test. It doesn't make sure the code run correctly in all conditions, nor does it guarantee no logical errors. 
+We obtain a 97% total code coverage, which includes all our source code. It's very close to 100% and it helps ensure that the code paths are tested, reducing the chances of undiscovered bugs or untested scenarios. However, the coverage won't promise a bug-free code because it only focuses on if the code is executed in test. It doesn't make sure the code run correctly in all conditions, nor does it guarantee no logical errors. There are other steps required in order to achieve error-free e.g. integration testing, functional testing. These additional practices can also be implemented in our project to complement code coverage.
+
 
 ### Question 9
 
@@ -257,7 +258,7 @@ For our project we used DVC to manage our data, and it helped us by allowing us 
 >
 > Answer:
 
-We run unittesting using `pytest` and linting by `flake8` and `ruff` in CI process. We test on ubuntu, windows and macos and make full use of pip cache for dependencies installation. Please check this link for example. https://github.com/Bozhi-Lyu/MLOpsProj/actions/runs/7569102665/job/20611683475?pr=52 
+
 
 ## Running code and tracking experiments
 
