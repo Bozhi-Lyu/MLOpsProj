@@ -512,3 +512,10 @@ The main issues was to work out how to use the different tools, especially the C
 > Answer:
 
 --- question 27 fill here ---
+s183478 was in charge of setting up the initial cookiecutter project, local building of docker files, continuous integration on Github, and Weights & Biases sweeping experimetation.
+
+s232251
+
+s194274
+
+s230212
