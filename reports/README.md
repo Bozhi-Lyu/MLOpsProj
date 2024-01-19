@@ -420,7 +420,7 @@ It was useful for debugging and getting familiar with the structure of Google Cl
 >
 > Answer:
 
-We did manage to deploy our model in the cloud using FastAPI and Cloud Run, but we didn't deploy it locally beforehand. While it could have been beneficial to do local deployments in order to see if the deployment is working as intended, we decided to prioritise the cloud deployment. In order to use the deployed model, one could either go to the website in which it is hosted (https://predict-nzzyxeyodq-ew.a.run.app/docs), or call the following curl command:
+We successfully deployed our model in the cloud using FastAPI and Cloud Run, but we didn not implement a local deployment beforehand. While the construction of a local deployments could have proved beneficial in order to see the deployment's functionality and performance, we chose to prioritize deploying directly to the cloud. This decision was based on our focus on cloud deployment as the primary aim. In order to use the deployed model, one could either visit the website in which it is hosted (https://predict-nzzyxeyodq-ew.a.run.app/docs), or call the following curl command:
 
 ```
 curl -X 'POST' \
