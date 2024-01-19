@@ -419,7 +419,15 @@ We used the following two services: Engine and Bucket. Engine is used for... and
 >
 > Answer:
 
---- question 22 fill here ---
+We did manage to deploy our model in the cloud using FastAPI and Cloud Run, but we didn't deploy it locally beforehand. While it could have been beneficial to do local deployments in order to see if the deployment is working as intended, we decided to prioritise the cloud deployment. In order to use the deployed model, one could either go to the website in which it is hosted (https://predict-nzzyxeyodq-ew.a.run.app/docs), or call the following curl command:
+
+```
+curl -X 'POST' \
+  'https://predict-nzzyxeyodq-ew.a.run.app/predict_image/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'file=@test.png;type=image/png'
+```
 
 ### Question 23
 
