@@ -7,37 +7,19 @@ import torch
 import tqdm
 import wandb
 import matplotlib.pyplot as plt
-from torch.utils.data import Dataset
 from torchvision import transforms
 import hydra
-from models.model import *
 
-class CustomTensorDataset(Dataset):
-    """
-    TensorDataset with support of transforms.
+# super quick fix for imports dont judge me
+try:
+    from src.models.model import *
+    from src.helper import extract_hyperparameters, parse_optimizer, CustomTensorDataset
+except: 
+    from models.model import *
+    from helper import extract_hyperparameters, parse_optimizer, CustomTensorDataset
 
-    Extends the standard PyTorch Dataset to include transform capabilities,
-    which enables the data to be preprocessed bvia various transformations 
-    before the data is input into the model.   
-    """
+from omegaconf import OmegaConf
 
-    def __init__(self, tensors: torch.Tensor, transform=None) -> None:
-        assert all(tensors[0].size(0) == tensor.size(0) for tensor in tensors)
-        self.tensors = tensors
-        self.transform = transform
-
-    def __getitem__(self, index):
-        x = self.tensors[0][index]
-
-        if self.transform:
-            x = self.transform(x)
-
-        y = self.tensors[1][index]
-
-        return x, y
-
-    def __len__(self):
-        return self.tensors[0].size(0)
 
 
 @hydra.main(config_name="train_config.yaml", config_path=".", version_base="1.2")
@@ -46,7 +28,7 @@ def main(config):
     Main function for training the model.
 
     Initializes the model and dataloaders, then continues to train and validate.
-    Evaluates the model's performance and saves the results as well as the final trained model. 
+    Evaluates the model's performance and saves the results as well as the final trained model.
     """
 
     config = config["hyperparameters"]
@@ -54,10 +36,9 @@ def main(config):
 
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
-
-    wandb.config = config
-
     logger.info("Training FER model")
+
+    lr, epochs, optim_name, batch_size = extract_hyperparameters(config)
 
     # os.environ["CUDA_LAUNCH_BLOCKING"] = "1" # For CUDA 10.1
     os.environ["CUBLAS_WORKSPACE_CONFIG"] = ":16:8"  # For CUDA >= 10.2
@@ -73,8 +54,8 @@ def main(config):
     else:
         device = torch.device("cpu")
         logging.info("Training on CPU")
-    
-    # Define transformers 
+
+    # Define transformers
     transform = transforms.Compose(
         [
             transforms.RandomHorizontalFlip(p=0.5),  # 50% chance of applying a horizontal flip
@@ -95,9 +76,9 @@ def main(config):
     test_images = torch.load(config["data_path"] + "test_images.pt")
     test_target = torch.load(config["data_path"] + "test_target.pt")
 
-    #train_set = TensorDataset(train_images, train_target)
-    #validation_set = TensorDataset(validation_images, validation_target)
-    #test_set = TensorDataset(test_images, test_target)
+    # train_set = TensorDataset(train_images, train_target)
+    # validation_set = TensorDataset(validation_images, validation_target)
+    # test_set = TensorDataset(test_images, test_target)
 
     # Create datasets
     train_set = CustomTensorDataset((train_images, train_target), transform=transform)
@@ -112,7 +93,7 @@ def main(config):
 
     trainloader = torch.utils.data.DataLoader(
         train_set,
-        batch_size=config.batch_size,
+        batch_size=batch_size,
         shuffle=True,
         num_workers=config.num_workers,
         pin_memory=True,
@@ -121,7 +102,7 @@ def main(config):
 
     validationloader = torch.utils.data.DataLoader(
         validation_set,
-        batch_size=config.batch_size,
+        batch_size=batch_size,
         shuffle=False,
         num_workers=config.num_workers,
         pin_memory=True,
@@ -129,23 +110,23 @@ def main(config):
 
     testloader = torch.utils.data.DataLoader(
         test_set,
-        batch_size=config.batch_size,
+        batch_size=batch_size,
         shuffle=False,
         num_workers=config.num_workers,
         pin_memory=True,
     )
 
     # Initialize optimizer and loss criterion
-    optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
+    optimizer = parse_optimizer(optim_name, model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
-    
+
     # Train the model
     history = []
 
     logger.info("Starting training...")
 
     # Loop
-    for epoch in range(config.epochs):
+    for epoch in range(epochs):
         train_loss = 0
         val_loss = 0
         model.train()
@@ -200,12 +181,12 @@ def main(config):
     torch.save(model.state_dict(), "models/saved_models/model.pt")
 
     # Plot training curve
-    plt.plot(range(len(history)), history, label="Training Loss")
-    plt.xlabel("Steps")
-    plt.ylabel("Loss")
-    plt.title("Training Curve")
-    plt.legend()
-    plt.savefig("reports/figures/training_curve.png")
+    #plt.plot(range(len(history)), history, label="Training Loss")
+    #plt.xlabel("Steps")
+    #plt.ylabel("Loss")
+    #plt.title("Training Curve")
+    #plt.legend()
+    #plt.savefig("reports/figures/training_curve.png")
 
     # Test the model
     logger.info("Testing model...")
@@ -232,6 +213,26 @@ def main(config):
 
         logger.info(f"Test accuracy: {accuracy * 100}%")
 
+
 # Execution
 if __name__ == "__main__":
-    main()
+    sweep_configuration = {
+        "method": "grid",
+        "name": "sweep",
+        "metric": {"goal": "minimize", "name": "train_loss"},
+        'parameters': {
+            'learning_rate': {'values': [0.0001, 0.001, 0.01, 0.1]},
+            'epochs': {'values': [5, 10, 15, 20, 25, 30]},
+            'optimizer': {'values': ['adam', 'adamw', 'adagrad', 'adadelta', 'sgd']},
+            'batch_size': {'values': [32, 64, 128, 256]
+            }
+        }
+    }
+
+    config = OmegaConf.load("src/train_config.yaml")["hyperparameters"]
+    if config.do_sweep:
+        sweep_id = wandb.sweep(sweep=sweep_configuration, project=config.project_name, entity=config.user)
+
+        wandb.agent(sweep_id, function=main, count=480)
+    else:
+        main()

@@ -1,0 +1,34 @@
+program: src/train_model.py
+method: random
+metric:
+  name: val_accuracy
+  goal: maximize
+parameters:
+  learning_rate:
+    values: 
+    - 0.001
+    - 0.01
+    - 0.1
+  epochs:
+    values:
+      - 5
+      - 10 
+      - 15
+  optimizer:
+    values: 
+      - 'adam'
+      - 'adamw'
+      - 'adagrad'
+      - 'adadelta'
+      - 'sgd'
+  batch_size:
+    distribution: q_log_uniform_values
+    min: 32
+    max: 256
+    q: 8
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - ${args_no_hyphens}
