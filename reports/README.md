@@ -258,6 +258,17 @@ For our project we used DVC to manage our data, and it helped us by allowing us 
 >
 > Answer:
 
+Our CI setup for the project incorporates several essential components to ensure code quality and reliability. We utilize a combination of unit testing, linting, and caching techniques to streamline the development process. Here are some details about our CI setup:
+
+- Unit Testing: We employ `pytest` to execute unit tests and `coverage` to give a coverage report. Unit tests are discussed in question 7 and question 8. By running unit tests automatically during the CI process, we can quickly identify any regressions or bugs introduced with code changes.
+
+- Linting: We utilize two linting tools, `flake8` and `ruff`, to enforce code style and maintain code quality.
+
+- Testing on Multiple Operating Systems: Our CI pipeline tests the code on the latest versions of Ubuntu, Windows, and macOS operating systems. This approach allows us to validate the cross-platform compatibility of our code and ensures that it functions correctly in diverse environments.
+
+- Caching: To optimize the CI process and reduce dependency installation time, we make full use of the pip cache. Caching saves the downloaded dependencies between CI runs, avoiding the need to download them repeatedly and significantly reducing the build time.
+
+To provide a more comprehensive understanding of our CI setup, you can refer to the following link to one of our GitHub Actions workflows: [GitHub Actions Workflow Example](https://github.com/Bozhi-Lyu/MLOpsProj/actions/runs/7569102665/job/20611683475?pr=52). This workflow showcases the integration of unit testing, linting, and other CI-related processes within our project.
 
 
 ## Running code and tracking experiments
